@@ -6,25 +6,25 @@ import sys
 
 from elspot_helper import get_elspot_data, ElSpotHTMLParser, ElSpotError, get_elspot_mock, save_to_file
 
-OK, ERROR = 0, 1
+SUCCESS, ERROR = 0, 1
 
 
 def the_main(args):
     logging.basicConfig(level=logging.INFO)
-    parser = ElSpotHTMLParser()
+    elspot_parser = ElSpotHTMLParser()
 
     try:
         logging.info('--get data')
         data = get_elspot_mock() if args.mock else get_elspot_data()
         logging.info('--parse data')
-        parser.feed(data)
+        elspot_parser.feed(data)
     except ElSpotError:
         return ERROR
 
     logging.info('--save data to file')
-    save_to_file(data=parser.get_elprices(), filename='elspot.json')
-    logging.debug(parser.get_elprices())
-    return OK
+    save_to_file(data=elspot_parser.get_elprices(), filename='elspot.json')
+    logging.debug(elspot_parser.get_elprices())
+    return SUCCESS
 
 
 if __name__ == "__main__":

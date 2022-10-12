@@ -1,4 +1,5 @@
 import json
+import re
 import urllib
 from html.parser import HTMLParser
 from urllib.error import URLError
@@ -7,6 +8,7 @@ from urllib.request import urlopen
 
 class ElSpotError(Exception):
     pass
+
 
 def get_elspot_data() -> str:
     url = 'https://elspot.nu/dagens-spotpris/timpriser-pa-elborsen-for-elomrade-se3-stockholm'
@@ -21,9 +23,11 @@ def get_elspot_data() -> str:
 
     return body.decode("utf-8")
 
+
 def get_elspot_mock():
     with open('elspot_mock.html') as fh:
         return fh.read()
+
 
 class ElSpotHTMLParser(HTMLParser):
 
@@ -39,15 +43,13 @@ class ElSpotHTMLParser(HTMLParser):
 
     @staticmethod
     def _is_date(data) -> bool:
-        return data.find(':') != -1  # parsa att det är timestamp! use re!
-
+        return re.match("(\d{4})-(\d{2})-(\d{2})", data) != None
 
     def handle_starttag(self, tag, attrs):
         self._recording = self._td_tag(tag)
 
     def handle_endtag(self, tag):
         self._recording = not self._td_tag(tag) and self._recording
-
 
     def handle_data(self, data):
         if self._recording:
@@ -56,7 +58,7 @@ class ElSpotHTMLParser(HTMLParser):
                 return
 
             if self._time is None:
-               raise ElSpotError('Error no date before price!')
+                raise ElSpotError('Error no date before price!')
 
             self._all[self._time] = data.split()[0]
 
@@ -64,7 +66,6 @@ class ElSpotHTMLParser(HTMLParser):
         return self._all
 
 
-# TODO save formatted!
 def save_to_file(data, filename):
     with open(filename, "w") as outfile:
-        json.dump(data, outfile)
+        json.dump(data, outfile, indent=2)

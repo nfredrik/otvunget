@@ -1,1 +1,5 @@
 # otvunget
+
+
+
+$ ./elspot.py
