@@ -1,40 +1,33 @@
 #!/usr/bin/env python
-
-import argparse
+import asyncio
 import logging
-import sys
 
-from elspot_helper import get_elspot_data, ElSpotHTMLParser, ElSpotError, get_elspot_mock, save_to_file
-
-SUCCESS, ERROR = 0, 1
+from elspot_helper import get_elspot_data, ElSpotHTMLParser, ElSpotError, get_elspot_mock, save_to_file, Config
 
 
-def the_main(args):
-    logging.basicConfig(level=logging.INFO)
-    elspot_parser = ElSpotHTMLParser()
+async def the_main():
+    config = Config()
+    logging.basicConfig(filename='elspot.log',
+                        format='%(asctime)s %(levelname)-8s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        level=eval(f'logging.{config.loglevel}'))
 
-    try:
-        logging.info('--get data')
-        data = get_elspot_mock() if args.mock else get_elspot_data()
-        logging.info('--parse data')
-        elspot_parser.feed(data)
-    except ElSpotError:
-        return ERROR
+    elspot_parser = ElSpotHTMLParser(logging)
+    get_data = get_elspot_mock if config.mock else get_elspot_data
+    while True:
+        try:
+            data = get_data(logging, config.attempts, config.interval)
+            elspot_parser.feed(data)
+            save_to_file(data=elspot_parser.get_elprices(), filename=config.filename, logging=logging)
+        except ElSpotError:
+            ...
 
-    logging.info('--save data to file')
-    save_to_file(data=elspot_parser.get_elprices(), filename='elspot.json')
-    logging.debug(elspot_parser.get_elprices())
-    return SUCCESS
+        except KeyboardInterrupt:
+            logging.error('--error, we failed going down...')
+            exit(1)
+
+        await asyncio.sleep(config.poll_frequency)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Extract prices', prog='elspot',
-                                     usage='%(prog)s [options]')
-    parser.add_argument('-l', '--loglevel', type=eval, choices=['FATAL', 'WARN', 'INFO', 'DEBUG'], required=False,
-                        help='log level')
-
-    parser.add_argument('-m', '--mock', action='store_true', help='enable the mocked data')
-
-    arguments = parser.parse_args()
-
-    sys.exit(the_main(arguments))
+    asyncio.run(the_main())

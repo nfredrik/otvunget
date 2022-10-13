@@ -1,5 +1,7 @@
+import configparser
 import json
 import re
+import time
 import urllib
 from html.parser import HTMLParser
 from urllib.error import URLError
@@ -10,29 +12,39 @@ class ElSpotError(Exception):
     pass
 
 
-def get_elspot_data() -> str:
+def get_elspot_data(logging, attempts, interval) -> str:
     url = 'https://elspot.nu/dagens-spotpris/timpriser-pa-elborsen-for-elomrade-se3-stockholm'
 
-    try:
-        response = urlopen(url)
-        body = response.read()
-        response.close()
-    except urllib.error.URLError as e:
-        print(f'Error {e}')
-        raise ElSpotError(f'Error: {e}') from e
+    logging.info('-- get_elspot data')
+    body = None
+    for _ in range(attempts):
+        try:
+            response = urlopen(url)
+            body = response.read()
+            response.close()
+            if response.getcode() == 200:
+                break
+
+        except urllib.error.URLError as e:
+            logging.error('-- get_elspot data failure')
+            raise ElSpotError(f'Error: {e}') from e
+
+        time.sleep(interval)
 
     return body.decode("utf-8")
 
 
-def get_elspot_mock():
+def get_elspot_mock(logging, attempts , interval):
+    logging.info('-- get_elspot mock data')
     with open('elspot_mock.html') as fh:
         return fh.read()
 
 
 class ElSpotHTMLParser(HTMLParser):
 
-    def __init__(self):
+    def __init__(self, logging):
         HTMLParser.__init__(self)
+        self.logging = logging
         self._recording = False
         self._all = {}
         self._time = None
@@ -58,6 +70,7 @@ class ElSpotHTMLParser(HTMLParser):
                 return
 
             if self._time is None:
+                self.logging.error('-- Error timestamp not inlcuded in data!!')
                 raise ElSpotError('Error no date before price!')
 
             self._all[self._time] = data.split()[0]
@@ -66,6 +79,21 @@ class ElSpotHTMLParser(HTMLParser):
         return self._all
 
 
-def save_to_file(data, filename):
+def save_to_file(data, filename, logging):
+    logging.info('--save_to_file ...')
     with open(filename, "w") as outfile:
         json.dump(data, outfile, indent=2)
+
+    logging.debug(data)
+
+
+class Config:
+    def __init__(self):
+        config = configparser.ConfigParser()
+        config.read('elspot.ini')
+        self.poll_frequency = int(config['default']['POLL_FREQUENCY'])
+        self.mock = config['default']['MOCK'] == 'True'
+        self.loglevel = config['default']['LOG_LEVEL']
+        self.attempts = int(config['default']['ATTEMPTS'])
+        self.interval = int(config['default']['INTERVAL'])
+        self.filename = config['default']['FILENAME']
