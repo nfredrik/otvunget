@@ -3,9 +3,11 @@ import json
 import re
 import time
 import urllib
+from datetime import datetime
 from html.parser import HTMLParser
 from urllib.error import URLError
 from urllib.request import urlopen
+from pathlib import Path
 
 
 class ElSpotError(Exception):
@@ -24,6 +26,8 @@ def get_elspot_data(logging, attempts, interval) -> str:
             response.close()
             if response.getcode() == 200:
                 break
+            else:
+                logging.error(f'-- get_elspot, error code: {response.getcode()}')
 
         except urllib.error.URLError as e:
             logging.error('-- get_elspot data failure')
@@ -34,7 +38,7 @@ def get_elspot_data(logging, attempts, interval) -> str:
     return body.decode("utf-8")
 
 
-def get_elspot_mock(logging, attempts , interval):
+def get_elspot_mock(logging, attempts, interval):
     logging.info('-- get_elspot mock data')
     with open('elspot_mock.html') as fh:
         return fh.read()
@@ -80,10 +84,27 @@ class ElSpotHTMLParser(HTMLParser):
 
 
 def save_to_file(data, filename, logging):
+    def file_saved_today(filename):
+        return Path(filename).exists() and \
+               (datetime.fromtimestamp(int(Path(filename).stat().st_ctime)).date() == datetime.now().date())
+
+    def today_date(data):
+        perhaps = datetime.fromisoformat(list(data.keys())[0])
+        return datetime.now().date() == perhaps.date()
+
+    if not today_date(data):
+        logging.error('Error too old date wait to save to file')
+        return
+
+    if file_saved_today(filename):
+        logging.error(f'a {filename} has been saved to day!')
+    else:
+        logging.error(f'No {filename} has been saved to day!')
+
+
     logging.info('--save_to_file ...')
     with open(filename, "w") as outfile:
         json.dump(data, outfile, indent=2)
-
     logging.debug(data)
 
 

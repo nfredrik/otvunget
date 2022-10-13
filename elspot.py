@@ -23,7 +23,7 @@ async def the_main():
             ...
 
         except KeyboardInterrupt:
-            logging.error('--error, we failed going down...')
+            logging.error('--User killed the script!!...')
             exit(1)
 
         await asyncio.sleep(config.poll_frequency)
