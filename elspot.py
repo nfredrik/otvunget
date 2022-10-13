@@ -2,15 +2,14 @@
 import asyncio
 import logging
 
-from elspot_helper import get_elspot_data, ElSpotHTMLParser, ElSpotError, get_elspot_mock, save_to_file, Config
+from elspot_helper import ElSpotError, save_to_file, Config, setup_logging
+from getter import get_elspot_data, get_elspot_mock
+from parser import ElSpotHTMLParser
 
 
 async def the_main():
     config = Config()
-    logging.basicConfig(filename='elspot.log',
-                        format='%(asctime)s %(levelname)-8s %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S',
-                        level=eval(f'logging.{config.loglevel}'))
+    setup_logging(config.loglevel)
 
     elspot_parser = ElSpotHTMLParser(logging)
     get_data = get_elspot_mock if config.mock else get_elspot_data
