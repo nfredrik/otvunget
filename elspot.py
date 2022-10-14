@@ -28,8 +28,11 @@ def the_main():
                 ...
 
             except KeyboardInterrupt:
-                logging.error('--User killed the script!!...')
+                logging.error('-- user killed the script!!...')
                 exit(1)
+
+        else:
+            logging.info('-- ping')
 
         time.sleep(config.poll_frequency)
 

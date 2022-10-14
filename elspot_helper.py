@@ -20,14 +20,13 @@ def save_to_file(data: dict, filename:str, logging) -> None:
         return datetime.now().strftime('%Y-%m-%d') == list(data.keys())[0].split()[0]
 
     if not today_date(data):
-        logging.error('Error too old date wait to save to file')
+        logging.error('-- error too old date wait to save to file')
         raise ElSpotError(f'Wrong date: {list(data.keys())[0]}')
 
 
-    logging.info('--save_to_file ...')
+    logging.info('-- save_to_file ...')
     with open(filename, "w") as outfile:
         json.dump(data, outfile, indent=2)
-    logging.debug(data)
 
 
 class Config:
