@@ -10,24 +10,22 @@ def get_elspot_data(logging, attempts: int, interval: int) -> str:
     url = 'https://elspot.nu/dagens-spotpris/timpriser-pa-elborsen-for-elomrade-se3-stockholm'
 
     logging.info('-- get_elspot data')
-    body = None
     for _ in range(attempts):
         try:
             response = urlopen(url)
             body = response.read()
             response.close()
             if response.getcode() == http.HTTPStatus.OK:
-                break
+                return body.decode("utf-8")
             else:
                 logging.error(f'-- get_elspot, error code: {response.getcode()}')
-
         except URLError as e:
-            logging.error('-- get_elspot data failure')
+            logging.error(f'-- get_elspot data failure {e}')
             raise ElSpotError(f'Error: {e}') from e
 
         time.sleep(interval)
 
-    return body.decode("utf-8")
+    raise ElSpotError('Error: did not get a proper reply')
 
 
 def get_elspot_mock(logging, attempts, interval):

@@ -3,7 +3,7 @@ import asyncio
 import logging
 
 from elspot_helper import ElSpotError, save_to_file, Config, setup_logging
-from getter import get_elspot_data, get_elspot_mock
+from elspot_scrape import get_elspot_data, get_elspot_mock
 from parser import ElSpotHTMLParser
 
 
