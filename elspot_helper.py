@@ -13,9 +13,6 @@ def save_to_file(data: dict, filename:str, logging) -> None:
     def file_saved_today(filename:str) -> bool:
         return Path(filename).exists() and datetime.fromtimestamp(int(Path(filename).stat().st_ctime)).date() == datetime.now().date()
 
-    def better_today_date(data:dict) -> bool:
-        return datetime.now().date() == datetime.fromisoformat(list(data.keys())[0]).date()
-
     def today_date(data:dict):
         return datetime.now().strftime('%Y-%m-%d') == list(data.keys())[0].split()[0]
 
