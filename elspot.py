@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import asyncio
+import time
 import logging
 
 from elspot_helper import ElSpotError, save_to_file, Config, setup_logging
@@ -7,7 +7,7 @@ from elspot_scrape import get_elspot_data, get_elspot_mock
 from parser import ElSpotHTMLParser
 
 
-async def the_main():
+def the_main():
     config = Config()
     setup_logging(config.loglevel)
 
@@ -25,8 +25,8 @@ async def the_main():
             logging.error('--User killed the script!!...')
             exit(1)
 
-        await asyncio.sleep(config.poll_frequency)
+        time.sleep(config.poll_frequency)
 
 
 if __name__ == "__main__":
-    asyncio.run(the_main())
+    the_main()
