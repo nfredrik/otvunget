@@ -13,17 +13,22 @@ def the_main():
 
     elspot_parser = ElSpotHTMLParser(logging)
     get_data = get_elspot_mock if config.mock else get_elspot_data
+    last_update = (datetime.datetime.now() - timedelta(days=1)).date
     while True:
-        try:
-            data = get_data(logging, config.attempts, config.interval)
-            elspot_parser.feed(data)
-            save_to_file(data=elspot_parser.get_elprices(), filename=config.filename, logging=logging)
-        except ElSpotError:
-            ...
 
-        except KeyboardInterrupt:
-            logging.error('--User killed the script!!...')
-            exit(1)
+        current = datetime.datetime.now().date()
+        if current > last_update:
+            try:
+                data = get_data(logging, config.attempts, config.interval)
+                elspot_parser.feed(data)
+                save_to_file(data=elspot_parser.get_elprices(), filename=config.filename, logging=logging)
+                last_update = current
+            except ElSpotError:
+                ...
+
+            except KeyboardInterrupt:
+                logging.error('--User killed the script!!...')
+                exit(1)
 
         time.sleep(config.poll_frequency)
 
