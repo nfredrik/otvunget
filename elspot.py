@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import time
 import logging
+from datetime import datetime, timedelta
 
 from elspot_helper import ElSpotError, save_to_file, Config, setup_logging
 from elspot_scrape import get_elspot_data, get_elspot_mock
@@ -13,10 +14,10 @@ def the_main():
 
     elspot_parser = ElSpotHTMLParser(logging)
     get_data = get_elspot_mock if config.mock else get_elspot_data
-    last_update = (datetime.datetime.now() - timedelta(days=1)).date
+    last_update = (datetime.now() - timedelta(days=1)).date()
     while True:
 
-        current = datetime.datetime.now().date()
+        current = datetime.now().date()
         if current > last_update:
             try:
                 data = get_data(logging, config.attempts, config.interval)

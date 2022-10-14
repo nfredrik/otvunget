@@ -21,7 +21,7 @@ def save_to_file(data: dict, filename:str, logging) -> None:
 
     if not today_date(data):
         logging.error('Error too old date wait to save to file')
-        ElSpotError(f'Wrong date: {list(data.keys())[0]}')
+        raise ElSpotError(f'Wrong date: {list(data.keys())[0]}')
 
 
     logging.info('--save_to_file ...')
