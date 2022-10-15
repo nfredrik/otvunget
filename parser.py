@@ -19,7 +19,7 @@ class ElSpotHTMLParser(HTMLParser):
 
     @staticmethod
     def _is_date(data) -> bool:
-        return re.match("(\d{4})-(\d{2})-(\d{2})", data) != None
+        return re.match(r"(\d{4})-(\d{2})-(\d{2})", data) is not None
 
     def handle_starttag(self, tag, attrs):
         self._recording = self._td_tag(tag)
