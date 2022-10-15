@@ -1,0 +1,8 @@
+{
+  "attempts": 5,
+  "interval": 5,
+  "poll_frequency": 5,
+  "loglevel": "DEBUG",
+  "mock": "False",
+  "filename": "elspot_json"
+}

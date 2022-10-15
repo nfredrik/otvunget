@@ -3,13 +3,14 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
+from types import SimpleNamespace
 
 
 class ElSpotError(Exception):
     pass
 
 
-def saved_file_date(filename) -> datetime:
+def saved_file_date(filename:str) -> datetime:
     return datetime.fromtimestamp(int(Path(filename).stat().st_ctime)) if Path(filename).exists() else datetime.fromtimestamp(0)
 
 def save_to_file(data: dict, filename: str, logging) -> None:
@@ -24,22 +25,13 @@ def save_to_file(data: dict, filename: str, logging) -> None:
     with open(filename, "w") as outfile:
         json.dump(data, outfile, indent=2)
 
+def read_config():
+    config = 'elspot_config.json'
+    if not Path(config).exists():
+        raise ElSpotError('Could not find config file: ' + config)
 
-class Config:
-    INI_FILE = 'elspot.ini'
-
-    def __init__(self):
-        config = configparser.ConfigParser()
-        if not Path(self.INI_FILE).exists():
-            raise ElSpotError('Error not file called: ' + self.INI_FILE)
-
-        config.read(self.INI_FILE)
-        self.poll_frequency = int(config['default']['POLL_FREQUENCY'])
-        self.mock = config['default']['MOCK'] == 'True'
-        self.loglevel = config['default']['LOG_LEVEL']
-        self.attempts = int(config['default']['ATTEMPTS'])
-        self.interval = int(config['default']['INTERVAL'])
-        self.filename = config['default']['FILENAME']
+    with open('elspot_config.json') as fh:
+       return json.loads(fh.read(), object_hook=lambda d: SimpleNamespace(**d))
 
 
 # TODO: Use wrapping functionality

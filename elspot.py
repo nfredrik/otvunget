@@ -3,17 +3,17 @@ import logging
 import time
 from datetime import datetime
 
-from elspot_helper import ElSpotError, save_to_file, Config, setup_logging, saved_file_date
+from elspot_helper import ElSpotError, save_to_file, setup_logging, saved_file_date, read_config
 from elspot_scrape import get_elspot_data, get_elspot_mock
 from parser import ElSpotHTMLParser
 
 
 def the_main():
-    config = Config()
+    config = read_config()
     setup_logging(config.loglevel)
 
     elspot_parser = ElSpotHTMLParser(logging)
-    get_data = get_elspot_mock if config.mock else get_elspot_data
+    get_data = get_elspot_mock if config.mock == 'True' else get_elspot_data
     while True:
         if datetime.now().date() > saved_file_date(config.filename).date():
             try:
