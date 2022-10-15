@@ -34,7 +34,7 @@ class Config:
     def __init__(self):
         config = configparser.ConfigParser()
         if not Path(self.INI_FILE).exists():
-            raise ElSpotError(f'Error not file called: {self.INI_FILE}')
+            raise ElSpotError('Error not file called: " + self.INI_FILE)
 
         config.read(self.INI_FILE)
         self.poll_frequency = int(config['default']['POLL_FREQUENCY'])
