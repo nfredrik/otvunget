@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-import time
 import logging
-from datetime import datetime, timedelta
+import time
+from datetime import datetime
 
-from elspot_helper import ElSpotError, save_to_file, Config, setup_logging
+from elspot_helper import ElSpotError, save_to_file, Config, setup_logging, saved_file_date
 from elspot_scrape import get_elspot_data, get_elspot_mock
 from parser import ElSpotHTMLParser
 
@@ -14,18 +14,14 @@ def the_main():
 
     elspot_parser = ElSpotHTMLParser(logging)
     get_data = get_elspot_mock if config.mock else get_elspot_data
-    last_update = (datetime.now() - timedelta(days=1)).date()
     while True:
-
-        current = datetime.now().date()
-        if current > last_update:
+        if datetime.now().date() > saved_file_date(config.filename).date():
             try:
                 data = get_data(logging, config.attempts, config.interval)
                 elspot_parser.feed(data)
                 save_to_file(data=elspot_parser.get_elprices(), filename=config.filename, logging=logging)
-                last_update = current
-            except ElSpotError:
-                ...
+            except ElSpotError as e:
+                logging.error(f'-- Ough... {e}')
 
             except KeyboardInterrupt:
                 logging.error('-- user killed the script!!...')
