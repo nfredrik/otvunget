@@ -19,7 +19,7 @@ def save_to_file(data: dict, filename: str, logging) -> None:
 
     if not today_date(data):
         logging.error('-- error too old date wait to save to file')
-        raise ElSpotError(f'Wrong date: {list(data.keys())[0]}')
+        raise ElSpotError('Wrong date: ' + list(data.keys())[0])
 
     logging.info('-- save_to_file ...')
     with open(filename, "w") as outfile:
@@ -32,7 +32,7 @@ class Config:
     def __init__(self):
         config = configparser.ConfigParser()
         if not Path(self.INI_FILE).exists():
-            raise ElSpotError('Error not file called: " + self.INI_FILE)
+            raise ElSpotError('Error not file called: ' + self.INI_FILE)
 
         config.read(self.INI_FILE)
         self.poll_frequency = int(config['default']['POLL_FREQUENCY'])
@@ -48,4 +48,4 @@ def setup_logging(level):
     logging.basicConfig(filename='elspot.log',
                         format='%(asctime)s %(levelname)-8s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
-                        level=eval(f'logging.{level}'))
+                        level=eval('logging.' + level))

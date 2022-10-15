@@ -15,13 +15,13 @@ def get_elspot_data(logging, attempts: int, interval: int) -> str:
             response = urlopen(url)
             body = response.read()
             response.close()
-            if response.getcode() == http.HTTPStatus.OK:
+            if response.getcode() == 200:
                 return body.decode("utf-8")
             else:
-                logging.error(f'-- get_elspot, error code: {response.getcode()}')
+                logging.error('-- get_elspot, error code: ' + response.getcode())
         except URLError as e:
-            logging.error(f'-- get_elspot data failure {e}')
-            raise ElSpotError(f'Error: {e}') from e
+            logging.error('-- get_elspot data failure ' + e)
+            raise ElSpotError('Error: ' + e) from e
 
         time.sleep(interval)
 
