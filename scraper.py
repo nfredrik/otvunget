@@ -5,9 +5,7 @@ from urllib.request import urlopen
 from elspot_helper import ElSpotError
 
 
-
 class Scraper:
-
     HTTP_OK = 200
 
     def __init__(self, mock, logging, attempts, interval):
@@ -44,7 +42,6 @@ class Scraper:
         logging.info('-- get_elspot mock data')
         with open('elspot_mock.html') as fh:
             return fh.read()
-
 
     def get_data(self):
         if self.mock == 'True':

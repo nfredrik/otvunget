@@ -6,6 +6,7 @@ from elspot_helper import ElSpotError
 
 class ElSpotHTMLParser(HTMLParser):
     date_pattern = re.compile(r"(\d{4})-(\d{2})-(\d{2})")
+    price_pattern = re.compile(r"(\d{2,4}),(\d{2,4})(.*)")
 
     def __init__(self, logging):
         HTMLParser.__init__(self)
@@ -24,7 +25,7 @@ class ElSpotHTMLParser(HTMLParser):
 
     @staticmethod
     def _is_price(data) -> bool:
-        return data.find(',') != -1
+        return ElSpotHTMLParser.price_pattern.match(data) is not None
 
     def handle_starttag(self, tag, attrs):
         self._recording = self._td_tag(tag)
@@ -44,7 +45,7 @@ class ElSpotHTMLParser(HTMLParser):
 
             if self._is_price(data):
                 self._all[self._time] = data.split()[0]
-                self.time = None  # restart
+                self._time = None  # restart
 
     def get_elprices(self) -> dict:
         return self._all

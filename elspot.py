@@ -8,7 +8,7 @@ from repo import Repo
 from scraper import Scraper
 
 
-def the_main():
+def main():
     config = read_config()
     logger = setup_logger(config.loglevel)
 
@@ -33,4 +33,4 @@ def the_main():
 
 
 if __name__ == "__main__":
-    the_main()
+    main()
