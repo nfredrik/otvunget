@@ -34,18 +34,22 @@ class ElSpotHTMLParser(HTMLParser):
         self._recording = not self._td_tag(tag) and self._recording
 
     def handle_data(self, data):
-        if self._recording:
-            if self._is_date(data):
-                self._time = data
-                return
+        if not self._recording:
+            return
+        if self._is_date(data):
+            self._time = data
+            return
 
-            if self._time is None:
-                self.logging.error('-- Error timestamp not inlcuded in data!!')
-                raise ElSpotError('Error no date before price!')
+        if self._is_price(data):
+            self._all[self._time] = data.split()[0]
+            self._time = None
+            return
 
-            if self._is_price(data):
-                self._all[self._time] = data.split()[0]
-                self._time = None  # restart
+        if self._time is None:
+            self.logging.error('-- Error timestamp not inlcuded in data!!')
+
+        self.logging.error('-- Error some problem with the data!')
+        raise ElSpotError(f'Error, some problem with data:{data}')
 
     def get_elprices(self) -> dict:
         return self._all
