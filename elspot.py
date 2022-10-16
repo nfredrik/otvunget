@@ -1,30 +1,32 @@
 #!/usr/bin/env python
-import logging
 import time
 from datetime import datetime
 
-from elspot_helper import ElSpotError, save_to_file, setup_logging, saved_file_date, read_config
-from elspot_scrape import get_elspot_data, get_elspot_mock
+from elspot_helper import ElSpotError, setup_logger, read_config
 from parser import ElSpotHTMLParser
+from repo import Repo
+from scraper import Scraper
 
 
 def the_main():
     config = read_config()
-    setup_logging(config.loglevel)
+    logger = setup_logger(config.loglevel)
 
-    elspot_parser = ElSpotHTMLParser(logging)
-    get_data = get_elspot_mock if config.mock == 'True' else get_elspot_data
+    scraper = Scraper(config.mock, logger, config.attempts, config.interval)
+    elspot_parser = ElSpotHTMLParser(logger)
+    repo = Repo(config.filename, logger)
+
     while True:
-        if datetime.now().date() > saved_file_date(config.filename).date():
+        if datetime.now().date() > repo.saved_file_date():
             try:
-                data = get_data(logging, config.attempts, config.interval)
+                data = scraper.get_data()
                 elspot_parser.feed(data)
-                save_to_file(data=elspot_parser.get_elprices(), filename=config.filename, logging=logging)
+                repo.save_to_file(elspot_parser.get_elprices())
             except ElSpotError as e:
-                logging.error(f'-- Ough... {e}')
+                logger.error(f'-- Ough... {e}')
 
             except KeyboardInterrupt:
-                logging.error('-- user killed the script!!...')
+                logger.error('-- user killed the script!!...')
                 exit(1)
 
         time.sleep(config.poll_frequency)
