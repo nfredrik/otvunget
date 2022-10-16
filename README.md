@@ -2,7 +2,7 @@
 
 Läs ut elpriser från en hemsida. Parsa html och gör om det till json och spara.
 
-Om en lyckat läsning har gjorts under dagen görs ingen mer läsning den dagen.
+Om en lyckat läsning har gjorts görs ingen mer läsning den dagen.
 Om json-datat inte  innehåller dagens datum sparas ingen fil, vilket gör 
 att skriptet fortsätter att läsa till det är uppfyllt. 
 
