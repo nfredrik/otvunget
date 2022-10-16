@@ -14,14 +14,14 @@ def main():
 
     scraper = Scraper(config.mock, logger, config.attempts, config.interval)
     elspot_parser = ElSpotHTMLParser(logger)
-    repo = Repo(config.filename, logger)
+    repo = Repo(config.filename, logger, config.stdout)
 
     while True:
         if datetime.now().date() > repo.saved_file_date():
             try:
                 data = scraper.get_data()
                 elspot_parser.feed(data)
-                repo.save_to_file(elspot_parser.get_elprices())
+                repo.save(elspot_parser.get_elprices())
             except ElSpotError as e:
                 logger.error(f'-- Ough... {e}')
 

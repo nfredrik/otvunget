@@ -7,6 +7,7 @@ from elspot_helper import ElSpotError
 
 class Scraper:
     HTTP_OK = 200
+    URL = 'https://elspot.nu/dagens-spotpris/timpriser-pa-elborsen-for-elomrade-se3-stockholm'
 
     def __init__(self, mock, logging, attempts, interval):
         self.mock = mock
@@ -16,12 +17,11 @@ class Scraper:
 
     @staticmethod
     def _get_elspot_data(logging, attempts: int, interval: int) -> str:
-        url = 'https://elspot.nu/dagens-spotpris/timpriser-pa-elborsen-for-elomrade-se3-stockholm'
 
         logging.info('-- get_elspot data')
         for _ in range(attempts):
             try:
-                response = urlopen(url)
+                response = urlopen(Scraper.URL)
                 body = response.read()
                 response.close()
                 if response.getcode() == Scraper.HTTP_OK:
@@ -44,7 +44,7 @@ class Scraper:
             return fh.read()
 
     def get_data(self):
-        if self.mock == 'True':
+        if bool(self.mock):
             return self._get_elspot_mock(self.logging, self.attempts, self.interval)
 
         return self._get_elspot_data(self.logging, self.attempts, self.interval)
