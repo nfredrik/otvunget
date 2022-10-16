@@ -5,6 +5,7 @@ from urllib.request import urlopen
 
 from elspot_helper import ElSpotError
 
+HTTP_OK = 200
 
 def get_elspot_data(logging, attempts: int, interval: int) -> str:
     url = 'https://elspot.nu/dagens-spotpris/timpriser-pa-elborsen-for-elomrade-se3-stockholm'
@@ -15,13 +16,12 @@ def get_elspot_data(logging, attempts: int, interval: int) -> str:
             response = urlopen(url)
             body = response.read()
             response.close()
-            if response.getcode() == 200:
+            if response.getcode() == HTTP_OK:
                 return body.decode("utf-8")
             else:
                 logging.error('-- get_elspot, error code: ' + response.getcode())
         except URLError as e:
             logging.error('-- get_elspot data failure ' + e)
-            raise ElSpotError('Error: ' + e) from e
 
         time.sleep(interval)
 

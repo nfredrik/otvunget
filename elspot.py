@@ -27,9 +27,6 @@ def the_main():
                 logging.error('-- user killed the script!!...')
                 exit(1)
 
-        else:
-            logging.info('-- ping')
-
         time.sleep(config.poll_frequency)
 
 
