@@ -30,7 +30,8 @@ class Repo:
         with open(self.filename, "w") as outfile:
             json.dump(data, outfile, indent=2)
 
-    def save_2_stdout(self, data: dict) -> None:
+    @staticmethod
+    def save_2_stdout(data: dict) -> None:
         pprint(data)
 
     def save(self, data: dict) -> None:
