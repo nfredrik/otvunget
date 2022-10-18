@@ -14,23 +14,23 @@ class Repo:
 
     @staticmethod
     def _today_date(d: dict):
-            return datetime.now().strftime('%Y-%m-%d') == list(d.keys())[0].split()[0]
+        dates = [d.split()[0] for d in d]
+        return any(datetime.now().strftime('%Y-%m-%d') == item for item in dates)
 
     def saved_file_date(self):
         return datetime.fromtimestamp(int(Path(self.filename).stat().st_ctime)).date() \
             if Path(self.filename).exists() else datetime.fromtimestamp(0).date()
 
     def save_2_file(self, data: dict) -> None:
-
         if not Repo._today_date(data):
-            self.logging.error('-- error too old date wait to save to file')
+            self.logging.error('-- error wrong date wait to save to file' + list(data.keys())[0])
             raise ElSpotError('Wrong date: ' + list(data.keys())[0])
 
         self.logging.info('-- save_to_file ...')
         with open(self.filename, "w") as outfile:
             json.dump(data, outfile, indent=2)
 
-    def save_2_stdout(self, data:dict) -> None:
+    def save_2_stdout(self, data: dict) -> None:
         pprint(data)
 
     def save(self, data: dict) -> None:

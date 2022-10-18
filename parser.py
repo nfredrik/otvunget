@@ -25,7 +25,9 @@ class ElSpotHTMLParser(HTMLParser):
 
     @staticmethod
     def _is_price(data) -> bool:
-        return ElSpotHTMLParser.price_pattern.match(data) is not None
+        return data.find(',') != -1
+
+        #return ElSpotHTMLParser.price_pattern.match(data) is not None
 
     def handle_starttag(self, tag, attrs):
         self._recording = self._td_tag(tag)
