@@ -3,7 +3,7 @@
   "interval": 5,
   "poll_frequency": 5,
   "loglevel": "DEBUG",
-  "mock": "True",
+  "mock": null,
   "filename": "elspot_json",
   "stdout": null
 }

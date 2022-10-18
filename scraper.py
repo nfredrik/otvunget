@@ -41,7 +41,9 @@ class Scraper:
         _ = interval
         logging.info('-- get_elspot mock data')
         with open('elspot_mock.html') as fh:
-            return fh.read()
+            tmp =  fh.read()
+
+        return tmp
 
     def get_data(self):
         if bool(self.mock):
