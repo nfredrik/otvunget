@@ -29,7 +29,7 @@ class Scraper:
                 else:
                     logging.error('-- get_elspot, error code: ' + response.getcode())
             except URLError as e:
-                logging.error('-- get_elspot data failure ' + e)
+                logging.error('-- get_elspot data failure ' + str(e))
 
             time.sleep(interval)
 

@@ -10,9 +10,12 @@ Skriptet styrs genom en konfiguration:
 
 | Parameter      | funktion                                        | typ   |
 |----------------|-------------------------------------------------|-------|
-| attempts       | antal fÃ¶rsÃ¶k mot datakÃ¤lla vid givet tillfÃ¤lle  | int   |
-| interval       | tid mellan varje fÃ¶rsÃ¶k vid ett givet tillfÃ¤lle | int   |
-| poll frequency | tid mellan varje fÃ¶rsÃ¶k                         | int   |
+| attempts       | antal försök mot datakälla vid givet tillfälle  | int   |
+| interval       | tid mellan varje försök vid ett givet tillfälle | int   |
+| poll frequency | deprikerad                                       | int   |
+| backoff_start  | starttid mellan tillfällen att försöka           | int    |
+| backoff_multipel | faktor att öka tiden med mellan försök         | int    |
+| backoff_stop   | maximal tid mellan tillfällen att försöka        | int    |
 | log level      | nivÃ¥ pÃ¥ log, fatal till debug                   | string|
 | mock           | mockad datakÃ¤lla eller inte                     | bool  |
 | filename       | namn pÃ¥ sparade elpriser, json                  | string|

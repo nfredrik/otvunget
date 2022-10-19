@@ -2,6 +2,7 @@ import json
 import logging
 from pathlib import Path
 from types import SimpleNamespace
+from datetime import datetime, timedelta
 
 
 class ElSpotError(Exception):
@@ -23,3 +24,9 @@ def setup_logger(level, filename='elspot.log'):
                         level=eval('logging.' + level))
 
     return logging.getLogger()
+
+def seconds_until_midnight():
+    tomorrow = datetime.now() + timedelta(1)
+    midnight = datetime(year=tomorrow.year, month=tomorrow.month, 
+                        day=tomorrow.day, hour=0, minute=0, second=0)
+    return (midnight - datetime.now()).seconds

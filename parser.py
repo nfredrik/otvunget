@@ -51,7 +51,7 @@ class ElSpotHTMLParser(HTMLParser):
             self.logging.error('-- Error timestamp not inlcuded in data!!')
 
         self.logging.error('-- Error some problem with the data!')
-        raise ElSpotError(f'Error, some problem with data:{data}')
+        raise ElSpotError('Error, some problem with data: ' + data)
 
     def get_elprices(self) -> dict:
         return self._all
