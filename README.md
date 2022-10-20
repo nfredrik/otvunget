@@ -1,14 +1,14 @@
-# AllmÃ¤nt
+# Allmänt
 
-LÃ¤s ut elpriser frÃ¥n en hemsida. Parsa html och gÃ¶r om det till json och spara till fil.
+Läs ut elpriser från en hemsida. Parsa html och gör om det till json och spara till fil.
 
-Om en lyckat lÃ¤sning har gjorts gÃ¶rs ingen mer lÃ¤sning den dagen.
-Om json-datat inte  innehÃ¥ller dagens datum sparas ingen fil, vilket gÃ¶r 
-att skriptet fortsÃ¤tter att fÃ¶rsÃ¶ka lÃ¤sa. 
+Om en lyckad läsning har gjorts görs ingen mer läsning den dagen.
+Om json-datat inte  innehåller dagens datum sparas ingen fil, vilket gör 
+att skriptet fortsätter att försöka läsa.
+Tiden mellan försök ökar exponentiellt till en maxtid.
 
 Skriptet styrs genom en konfiguration:
 
-<<<<<<< HEAD
 | Parameter      | funktion                                        | typ   |
 |----------------|-------------------------------------------------|-------|
 | attempts       | antal försök mot datakälla vid givet tillfälle  | int   |
@@ -17,30 +17,18 @@ Skriptet styrs genom en konfiguration:
 | backoff_start  | starttid mellan tillfällen att försöka           | int    |
 | backoff_multipel | faktor att öka tiden med mellan försök         | int    |
 | backoff_stop   | maximal tid mellan tillfällen att försöka        | int    |
-| log level      | nivÃ¥ pÃ¥ log, fatal till debug                   | string|
-| mock           | mockad datakÃ¤lla eller inte                     | bool  |
-| filename       | namn pÃ¥ sparade elpriser, json                  | string|
-=======
-| Parameter      | funktion                                        | typ    |
-|----------------|-------------------------------------------------|--------|
-| attempts       | antal fÃ¶rsÃ¶k mot datakÃ¤lla vid givet tillfÃ¤lle  | int    |
-| interval       | tid mellan varje fÃ¶rsÃ¶k vid ett givet tillfÃ¤lle | int    |
-| poll frequency | tid mellan varje fÃ¶rsÃ¶k                         | int    |
-| log level      | nivÃ¥ pÃ¥ log, fatal till debug                   | string |
-| mock           | mockad datakÃ¤lla eller inte                     | bool   |
-| filename       | namn pÃ¥ sparade elpriser, json                  | string |
-|  stdout        | skriv till stdout istf fÃ¶r fil                  | bool   |
->>>>>>> a4fdde35ceabf1bab28375c8451a99fde8bcb002
-
+| log level      | nivå på log, fatal till debug                   | string|
+| mock           | mockad datakälla eller inte                     | bool  |
+| filename       | namn på sparade elpriser, json                  | string|
 
 # Logging
 
-Vid hÃ¤mting loggar skriptet om det misslyckas att hÃ¤mta frÃ¥n datakÃ¤llan.
+Vid hämting loggar skriptet om det misslyckas att hämta från datakällan.
 
-Vi parsning av datat loggar skriptet om datat inte Ã¤r konsistent, exvis
-inget timestamp eller felaktikt format pÃ¥ priset.
+Vi parsning av datat loggar skriptet om datat inte är konsistent, exvis
+inget timestamp eller felaktikt format på priset.
 
 Vid sparande till fil loggar skriptet om data inte har dagens datum.
 
-## AnvÃ¤nding
+## Använding
 `$ ./elspot.py`

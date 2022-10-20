@@ -7,10 +7,6 @@
   "backoff_stop": 3600,
   "loglevel": "DEBUG",
   "mock": null,
-<<<<<<< HEAD
   "filename": "/var/local/elektroserver/elspot.json",
-=======
-  "filename": "elspot_json",
->>>>>>> a4fdde35ceabf1bab28375c8451a99fde8bcb002
   "stdout": null
 }
