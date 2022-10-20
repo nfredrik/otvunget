@@ -1,3 +1,4 @@
+import pathlib
 import time
 from urllib.error import URLError
 from urllib.request import urlopen
@@ -40,8 +41,7 @@ class Scraper:
         _ = attempts
         _ = interval
         logging.info('-- get_elspot mock data')
-        with open('elspot_mock.html') as fh:
-            return fh.read()
+        return pathlib.Path('elspot_mock.html').read_text()
 
     def get_data(self):
         if bool(self.mock):

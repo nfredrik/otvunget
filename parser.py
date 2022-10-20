@@ -6,7 +6,7 @@ from elspot_helper import ElSpotError
 
 class ElSpotHTMLParser(HTMLParser):
     date_pattern = re.compile(r"(\d{4})-(\d{2})-(\d{2})")
-    price_pattern = re.compile(r"(\d{2,4}),(\d{2,4})(.*)")
+    price_pattern = re.compile(r"(\d{1,4}),(\d{1,4})(.*)")
 
     def __init__(self, logging):
         HTMLParser.__init__(self)
@@ -25,9 +25,7 @@ class ElSpotHTMLParser(HTMLParser):
 
     @staticmethod
     def _is_price(data) -> bool:
-        return data.find(',') != -1
-
-        #return ElSpotHTMLParser.price_pattern.match(data) is not None
+        return ElSpotHTMLParser.price_pattern.match(data) is not None
 
     def handle_starttag(self, tag, attrs):
         self._recording = self._td_tag(tag)
@@ -43,12 +41,12 @@ class ElSpotHTMLParser(HTMLParser):
             return
 
         if self._is_price(data):
-            self._all[self._time] = data.split()[0]
+            self._all[self._time] = data.split()[0].replace(',', '.')
             self._time = None
             return
 
         if self._time is None:
-            self.logging.error('-- Error timestamp not inlcuded in data!!')
+            self.logging.error('-- Error timestamp not included in data!!')
 
         self.logging.error('-- Error some problem with the data!')
         raise ElSpotError('Error, some problem with data: ' + data)

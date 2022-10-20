@@ -8,6 +8,7 @@ att skriptet fortsätter att försöka läsa.
 
 Skriptet styrs genom en konfiguration:
 
+<<<<<<< HEAD
 | Parameter      | funktion                                        | typ   |
 |----------------|-------------------------------------------------|-------|
 | attempts       | antal f�rs�k mot datak�lla vid givet tillf�lle  | int   |
@@ -19,6 +20,17 @@ Skriptet styrs genom en konfiguration:
 | log level      | nivå på log, fatal till debug                   | string|
 | mock           | mockad datakälla eller inte                     | bool  |
 | filename       | namn på sparade elpriser, json                  | string|
+=======
+| Parameter      | funktion                                        | typ    |
+|----------------|-------------------------------------------------|--------|
+| attempts       | antal försök mot datakälla vid givet tillfälle  | int    |
+| interval       | tid mellan varje försök vid ett givet tillfälle | int    |
+| poll frequency | tid mellan varje försök                         | int    |
+| log level      | nivå på log, fatal till debug                   | string |
+| mock           | mockad datakälla eller inte                     | bool   |
+| filename       | namn på sparade elpriser, json                  | string |
+|  stdout        | skriv till stdout istf för fil                  | bool   |
+>>>>>>> a4fdde35ceabf1bab28375c8451a99fde8bcb002
 
 
 # Logging
@@ -30,13 +42,5 @@ inget timestamp eller felaktikt format på priset.
 
 Vid sparande till fil loggar skriptet om data inte har dagens datum.
 
-
 ## Använding
-$ ./elspot.py
-
-
-## TOOL
-
- - wrap på logg?
- - bättre parsning av pris?
- - 
+`$ ./elspot.py`
