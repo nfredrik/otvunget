@@ -9,44 +9,31 @@ from scraper import Scraper
 
 
 def main():
-
     config = read_config()
     logger = setup_logger(config.loglevel)
 
-    scraper = Scraper(config.mock, logger, config.attempts, config.interval)
+    scraper = Scraper(logger, config)
     elspot_parser = ElSpotHTMLParser(logger)
-    repo = Repo(config.filename, logger, config.stdout)
-
-    backoff = config.backoff_start
-
+    repo = Repo(logger, config)
+    time_to_sleep = 0
     while True:
-#        if datetime.now().date() > repo.saved_file_date():
-        if True:
-            try:
-                data = scraper.get_data()
-                elspot_parser.feed(data)
-                repo.save(elspot_parser.get_elprices())
-                success = True
-            except ElSpotError as e:
-                logger.error('-- Ough... ' + str(e))
-                success = False
+        try:
+            data, time_to_sleep = scraper.get_data()
+            elspot_parser.feed(data)
+            repo.save(elspot_parser.get_elprices())
+        except ElSpotError as e:
+            logger.error('-- Ough... ' + str(e))
 
-            except KeyboardInterrupt:
-                logger.error('-- user killed the script!!...')
-                exit(1)
+        except KeyboardInterrupt:
+            logger.error('-- user killed the script!!...')
+            exit(1)
 
-            if not success:
-                logger.debug('backoff ' + str(backoff))
-                time.sleep(backoff)
-                backoff = backoff * config.backoff_multipel
-                if backoff > config.backoff_stop:
-                    backoff = config.backoff_stop
-            else:
-                logger.debug('success, will sleep until midnight')
-                time.sleep(seconds_until_midnight())
-                backoff = config.backoff_start
+        if datetime.now().date() <= repo.saved_file_date():
+            logger.debug('success, will sleep until midnight')
+            time_to_sleep = seconds_until_midnight()
+            scraper.reset()
 
-#        time.sleep(config.poll_frequency)
+        time.sleep(time_to_sleep)
 
 
 if __name__ == "__main__":

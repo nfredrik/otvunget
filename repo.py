@@ -7,10 +7,10 @@ from elspot_helper import ElSpotError
 
 
 class Repo:
-    def __init__(self, filename, logging, stdout=False):
-        self.filename = filename
+    def __init__(self, logging, config):
+        self.filename = config.filename
         self.logging = logging
-        self.stdout = stdout
+        self.stdout = config.stdout
 
     @staticmethod
     def _today_date(d: dict):

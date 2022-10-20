@@ -5,16 +5,24 @@ from urllib.request import urlopen
 
 from elspot_helper import ElSpotError
 
-
+# Using @property decorator
 class Scraper:
     HTTP_OK = 200
     URL = 'https://elspot.nu/dagens-spotpris/timpriser-pa-elborsen-for-elomrade-se3-stockholm'
+    #URL = 'https://elspot.nu/dagens-spotpris/timpriser-ockhol'
 
-    def __init__(self, mock, logging, attempts, interval):
-        self.mock = mock
+    def __init__(self, logging, config):
+        self.mock = config.mock
         self.logging = logging
-        self.attempts = attempts
-        self.interval = interval
+        self.attempts = config.attempts
+        self.interval = config.interval
+        self.backoff = self.backoff_start = config.backoff_start
+        self.backoff_stop = config.backoff_stop
+        self.backoff_multipel = config.backoff_multipel
+
+
+    def reset(self):
+        self.backoff = self.backoff_start
 
     @staticmethod
     def _get_elspot_data(logging, attempts: int, interval: int) -> str:
@@ -44,7 +52,11 @@ class Scraper:
         return pathlib.Path('elspot_mock.html').read_text()
 
     def get_data(self):
-        if bool(self.mock):
-            return self._get_elspot_mock(self.logging, self.attempts, self.interval)
+        self.logging.debug('backoff ' + str(self.backoff))
+        self.backoff *= self.backoff_multipel
+        self.backoff = self.backoff_stop if self.backoff > self.backoff_stop else self.backoff
 
-        return self._get_elspot_data(self.logging, self.attempts, self.interval)
+        if bool(self.mock):
+            return self._get_elspot_mock(self.logging, self.attempts, self.interval),self.backoff
+
+        return self._get_elspot_data(self.logging, self.attempts, self.interval),self.backoff
