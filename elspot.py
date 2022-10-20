@@ -44,7 +44,7 @@ def main():
             else:
                 logger.debug('success, will sleep until midnight')
                 time.sleep(seconds_until_midnight())
-                backoff = start
+                backoff = config.backoff_start
 
 #        time.sleep(config.poll_frequency)
 
