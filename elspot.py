@@ -22,14 +22,14 @@ def main():
             elspot_parser.feed(data)
             repo.save(elspot_parser.get_elprices())
         except ElSpotError as e:
-            logger.error('-- Ough... ' + str(e))
+            logger.error('-- ough... ' + str(e))
 
         except KeyboardInterrupt:
             logger.error('-- user killed the script!!...')
             exit(1)
 
         if datetime.now().date() <= repo.saved_file_date():
-            logger.debug('success, will sleep until midnight')
+            logger.debug('-- success, will sleep until midnight')
             time_to_sleep = seconds_until_midnight()
             scraper.reset()
 

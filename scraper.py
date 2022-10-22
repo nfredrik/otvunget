@@ -9,7 +9,6 @@ from elspot_helper import ElSpotError
 class Scraper:
     HTTP_OK = 200
     URL = 'https://elspot.nu/dagens-spotpris/timpriser-pa-elborsen-for-elomrade-se3-stockholm'
-    #URL = 'https://elspot.nu/dagens-spotpris/timpriser-ockhol'
 
     def __init__(self, logging, config):
         self.mock = config.mock
@@ -52,7 +51,7 @@ class Scraper:
         return pathlib.Path('elspot_mock.html').read_text()
 
     def get_data(self):
-        self.logging.debug('backoff ' + str(self.backoff))
+        self.logging.debug('-- backoff ' + str(self.backoff))
         self.backoff *= self.backoff_multipel
         self.backoff = self.backoff_stop if self.backoff > self.backoff_stop else self.backoff
 

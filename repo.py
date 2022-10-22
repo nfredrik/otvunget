@@ -23,7 +23,6 @@ class Repo:
 
     def save_2_file(self, data: dict) -> None:
         if not Repo._today_date(data):
-            self.logging.error('-- error wrong date wait to save to file' + list(data.keys())[0])
             raise ElSpotError('Wrong date: ' + list(data.keys())[0])
 
         self.logging.info('-- save_to_file ...')
