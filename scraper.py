@@ -5,7 +5,6 @@ from urllib.request import urlopen
 
 from elspot_helper import ElSpotError
 
-# Using @property decorator
 class Scraper:
     HTTP_OK = 200
     URL = 'https://elspot.nu/dagens-spotpris/timpriser-pa-elborsen-for-elomrade-se3-stockholm'
