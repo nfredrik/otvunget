@@ -5,22 +5,16 @@ from urllib.request import urlopen
 
 from elspot_helper import ElSpotError
 
+
 class Scraper:
     HTTP_OK = 200
     URL = 'https://elspot.nu/dagens-spotpris/timpriser-pa-elborsen-for-elomrade-se3-stockholm'
 
     def __init__(self, logging, config):
-        self.mock = config.mock
         self.logging = logging
         self.attempts = config.attempts
         self.interval = config.interval
-        self.backoff = self.backoff_start = config.backoff_start
-        self.backoff_stop = config.backoff_stop
-        self.backoff_multipel = config.backoff_multipel
-
-
-    def reset(self):
-        self.backoff = self.backoff_start
+        self._get_data = self._get_elspot_mock if bool(config.mock) else self._get_elspot_data
 
     @staticmethod
     def _get_elspot_data(logging, attempts: int, interval: int) -> str:
@@ -50,11 +44,22 @@ class Scraper:
         return pathlib.Path('elspot_mock.html').read_text()
 
     def get_data(self):
-        self.logging.debug('-- backoff ' + str(self.backoff))
+        return self._get_data(self.logging, self.attempts, self.interval)
+
+
+class SleepController:
+    def __init__(self, logging, config):
+        self.logging = logging
+        self.backoff = self.backoff_start = config.backoff_start
+        self.backoff_stop = config.backoff_stop
+        self.backoff_multipel = config.backoff_multipel
+
+    def current_backoff(self):
+        self.logging.debug(f'-- backoff {str(self.backoff)}')
+        current_backoff = self.backoff
         self.backoff *= self.backoff_multipel
         self.backoff = self.backoff_stop if self.backoff > self.backoff_stop else self.backoff
+        return current_backoff
 
-        if bool(self.mock):
-            return self._get_elspot_mock(self.logging, self.attempts, self.interval),self.backoff
-
-        return self._get_elspot_data(self.logging, self.attempts, self.interval),self.backoff
+    def reset(self):
+        self.backoff = self.backoff_start
