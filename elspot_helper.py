@@ -30,3 +30,19 @@ def seconds_until_midnight():
     midnight = datetime(year=tomorrow.year, month=tomorrow.month, 
                         day=tomorrow.day, hour=0, minute=0, second=0)
     return (midnight - datetime.now()).seconds
+
+
+def save_csv(filename, data: dict) -> None:
+    csv_name = filename.replace('.json', '.csv')
+    file_exist = bool(Path(csv_name).exists())
+
+    with open(csv_name, 'a') as fh:
+        if not file_exist:
+            fh.write('date time weekday price\n')
+
+        for d in data.items():
+            the_date, price = d
+            weekday = datetime.strptime(the_date, "%Y-%m-%d %H:%M").weekday()
+            the_string = the_date + ' ' + str(weekday) + ' ' + price.replace('.', ',') + '\n'
+
+            fh.write(the_string)

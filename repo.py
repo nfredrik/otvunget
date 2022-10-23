@@ -35,3 +35,5 @@ class Repo:
 
     def save(self, data: dict) -> None:
         return self.save_2_stdout(data) if bool(self.stdout) else self.save_2_file(data)
+
+

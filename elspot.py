@@ -2,7 +2,7 @@
 import time
 from datetime import datetime
 
-from elspot_helper import ElSpotError, setup_logger, read_config, seconds_until_midnight
+from elspot_helper import ElSpotError, setup_logger, read_config, seconds_until_midnight, save_csv
 from parser import ElSpotHTMLParser
 from repo import Repo
 from scraper import Scraper, SleepController
@@ -22,7 +22,9 @@ def main():
             time_to_sleep = sleep_controller.current_backoff()
             data = scraper.get_data()
             elspot_parser.feed(data)
-            repo.save(elspot_parser.get_elprices())
+            el_prices = elspot_parser.get_elprices()
+            repo.save(el_prices)
+
         except ElSpotError as e:
             logger.error('-- ough... ' + str(e))
 
@@ -34,6 +36,8 @@ def main():
             logger.debug('-- success, will sleep until midnight')
             time_to_sleep = seconds_until_midnight()
             sleep_controller.reset()
+            save_csv(config.filename, el_prices)
+
 
         time.sleep(time_to_sleep)
 
