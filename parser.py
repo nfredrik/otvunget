@@ -52,4 +52,5 @@ class ElSpotHTMLParser(HTMLParser):
         raise ElSpotError('Error, some problem with data: ' + data)
 
     def get_elprices(self) -> dict:
-        return self._all
+        interim, self.all = self._all, {}
+        return interim

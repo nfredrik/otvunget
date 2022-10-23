@@ -7,10 +7,10 @@ from elspot_helper import ElSpotError
 
 
 class Repo:
-    def __init__(self, filename, logging, stdout=False):
-        self.filename = filename
+    def __init__(self, logging, config):
+        self.filename = config.filename
         self.logging = logging
-        self.stdout = stdout
+        self.stdout = config.stdout
 
     @staticmethod
     def _today_date(d: dict):
@@ -23,7 +23,6 @@ class Repo:
 
     def save_2_file(self, data: dict) -> None:
         if not Repo._today_date(data):
-            self.logging.error('-- error wrong date wait to save to file' + list(data.keys())[0])
             raise ElSpotError('Wrong date: ' + list(data.keys())[0])
 
         self.logging.info('-- save_to_file ...')
