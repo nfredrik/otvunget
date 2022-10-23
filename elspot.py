@@ -19,8 +19,8 @@ def main():
     time_to_sleep = 0
     while True:
         try:
-            data = scraper.get_data()
             time_to_sleep = sleep_controller.current_backoff()
+            data = scraper.get_data()
             elspot_parser.feed(data)
             repo.save(elspot_parser.get_elprices())
         except ElSpotError as e:
