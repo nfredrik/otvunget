@@ -7,6 +7,8 @@
   "backoff_stop": 3600,
   "loglevel": "DEBUG",
   "mock": null,
-  "filename": "elspot.json",
+  "json_filename": "elspot.json",
+  "log_filename": "elspot.log",
+  "csv_filename": "elspot.csv",
   "stdout": null
 }

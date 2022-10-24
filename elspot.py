@@ -10,7 +10,7 @@ from scraper import Scraper, SleepController
 
 def main():
     config = read_config()
-    logger = setup_logger(config.loglevel)
+    logger = setup_logger(config.loglevel, config.log_filename)
 
     scraper = Scraper(logger, config)
     sleep_controller = SleepController(logger, config)
@@ -36,7 +36,7 @@ def main():
             logger.debug('-- success, will sleep until midnight')
             time_to_sleep = seconds_until_midnight()
             sleep_controller.reset()
-            save_csv(config.filename, el_prices)
+            save_csv(config.csv_filename, el_prices)
 
 
         time.sleep(time_to_sleep)

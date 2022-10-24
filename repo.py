@@ -8,7 +8,7 @@ from elspot_helper import ElSpotError
 
 class Repo:
     def __init__(self, logging, config):
-        self.filename = config.filename
+        self.filename = config.json_filename
         self.logging = logging
         self.stdout = config.stdout
 
