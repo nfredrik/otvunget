@@ -35,7 +35,7 @@ class Scraper:
 
         raise ElSpotError('Error: did not get a proper reply')
 
-    def _get_elspot_mock(self):
+    def _get_elspot_mock(self) -> str:
         self.logging.info('-- get_elspot mock data')
         return pathlib.Path('elspot_mock.html').read_text()
 

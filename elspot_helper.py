@@ -25,9 +25,10 @@ def setup_logger(level, filename):
 
     return logging.getLogger()
 
+
 def seconds_until_midnight():
     tomorrow = datetime.now() + timedelta(1)
-    midnight = datetime(year=tomorrow.year, month=tomorrow.month, 
+    midnight = datetime(year=tomorrow.year, month=tomorrow.month,
                         day=tomorrow.day, hour=0, minute=0, second=10)
     return (midnight - datetime.now()).seconds
 
@@ -45,5 +46,3 @@ def save_csv(filename, data: dict) -> None:
             the_string = the_date + ' ' + str(weekday) + ' ' + price.replace('.', ',') + '\n'
 
             fh.write(the_string)
-
-
