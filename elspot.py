@@ -1,15 +1,19 @@
 #!/usr/bin/env python
 import time
 from datetime import datetime
+from pathlib import Path
 
-from elspot_helper import ElSpotError, setup_logger, read_config, seconds_until_midnight, save_csv, CONFIG_FILE_PATH
+from elspot_helper import ElSpotError, setup_logger, read_config, seconds_until_midnight, save_csv
 from parser import ElSpotHTMLParser
 from repo import Repo
 from scraper import Scraper, SleepController
 
+# The config file path is a file with the following name in the same directory as this script itself
+CONFIG_FILE_NAME = 'elspot_config.json'
 
 def main():
-    config = read_config(config_filename=CONFIG_FILE_PATH)
+    config_file_path = str(Path(__file__).with_name(CONFIG_FILE_NAME))
+    config = read_config(config_filename=config_file_path)
     logger = setup_logger(config.loglevel, config.log_filename)
 
     scraper = Scraper(logger, config)
@@ -37,10 +41,13 @@ def main():
             time_to_sleep = seconds_until_midnight()
             sleep_controller.reset()
             save_csv(config.csv_filename, el_prices)
-
+            
+        else:
+            logger.debug('-- failure, will backoff ' + str(time_to_sleep) + ' seconds')
 
         time.sleep(time_to_sleep)
 
 
 if __name__ == "__main__":
     main()
+

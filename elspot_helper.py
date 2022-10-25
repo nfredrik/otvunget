@@ -28,7 +28,7 @@ def setup_logger(level, filename):
 def seconds_until_midnight():
     tomorrow = datetime.now() + timedelta(1)
     midnight = datetime(year=tomorrow.year, month=tomorrow.month, 
-                        day=tomorrow.day, hour=0, minute=1, second=0)
+                        day=tomorrow.day, hour=0, minute=0, second=10)
     return (midnight - datetime.now()).seconds
 
 
@@ -47,4 +47,3 @@ def save_csv(filename, data: dict) -> None:
             fh.write(the_string)
 
 
-CONFIG_FILE_PATH = './elspot_config.json'
