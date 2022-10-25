@@ -17,7 +17,7 @@ def read_config(config_filename='elspot_config.json'):
         return json.loads(fh.read(), object_hook=lambda d: SimpleNamespace(**d))
 
 
-def setup_logger(level, filename='elspot.log'):
+def setup_logger(level, filename):
     logging.basicConfig(filename=filename,
                         format='%(asctime)s %(levelname)-8s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
@@ -30,3 +30,18 @@ def seconds_until_midnight():
     midnight = datetime(year=tomorrow.year, month=tomorrow.month, 
                         day=tomorrow.day, hour=0, minute=0, second=0)
     return (midnight - datetime.now()).seconds
+
+
+def save_csv(filename, data: dict) -> None:
+    file_exist = bool(Path(filename).exists())
+
+    with open(filename, 'a') as fh:
+        if not file_exist:
+            fh.write('date time weekday price\n')
+
+        for d in data.items():
+            the_date, price = d
+            weekday = datetime.strptime(the_date, "%Y-%m-%d %H:%M").weekday()
+            the_string = the_date + ' ' + str(weekday) + ' ' + price.replace('.', ',') + '\n'
+
+            fh.write(the_string)
