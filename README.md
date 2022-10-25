@@ -5,7 +5,8 @@ Läs ut elpriser från en hemsida. Parsa html och gör om det till json och spara t
 Om en lyckad läsning har gjorts görs ingen mer läsning den dagen.
 Om json-datat inte  innehåller dagens datum sparas ingen fil, vilket gör 
 att skriptet fortsätter att försöka läsa.
-Tiden mellan försök ökar exponentiellt till en maxtid.
+Tiden mellan försök ökar exponentiellt till en maxtid vid misslyckade och 
+nollställs till en startvärde vid lyckad hämtning.
 
 Skriptet styrs genom en konfiguration:
 

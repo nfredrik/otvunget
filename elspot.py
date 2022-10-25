@@ -6,7 +6,8 @@ from pathlib import Path
 from elspot_helper import ElSpotError, setup_logger, read_config, seconds_until_midnight, save_csv
 from parser import ElSpotHTMLParser
 from repo import Repo
-from scraper import Scraper, SleepController
+from scraper import Scraper
+from sleep_controller import SleepController
 
 # The config file path is a file with the following name in the same directory as this script itself
 CONFIG_FILE_NAME = 'elspot_config.json'
