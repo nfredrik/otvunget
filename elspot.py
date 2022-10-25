@@ -2,14 +2,14 @@
 import time
 from datetime import datetime
 
-from elspot_helper import ElSpotError, setup_logger, read_config, seconds_until_midnight, save_csv
+from elspot_helper import ElSpotError, setup_logger, read_config, seconds_until_midnight, save_csv, CONFIG_FILE_PATH
 from parser import ElSpotHTMLParser
 from repo import Repo
 from scraper import Scraper, SleepController
 
 
 def main():
-    config = read_config()
+    config = read_config(config_filename=CONFIG_FILE_PATH)
     logger = setup_logger(config.loglevel, config.log_filename)
 
     scraper = Scraper(logger, config)
