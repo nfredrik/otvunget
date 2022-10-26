@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, date
 from pathlib import Path
 from pprint import pprint
 
@@ -13,11 +13,11 @@ class Repo:
         self.stdout = config.stdout
 
     @staticmethod
-    def _today_date(d: dict):
+    def _today_date(d: dict) -> bool:
         dates = [d.split()[0] for d in d]
         return any(datetime.now().strftime('%Y-%m-%d') == item for item in dates)
 
-    def saved_file_date(self):
+    def saved_file_date(self) -> date:
         return datetime.fromtimestamp(int(Path(self.filename).stat().st_ctime)).date() \
             if Path(self.filename).exists() else datetime.fromtimestamp(0).date()
 
@@ -35,5 +35,3 @@ class Repo:
 
     def save(self, data: dict) -> None:
         return self.save_2_stdout(data) if bool(self.stdout) else self.save_2_file(data)
-
-
