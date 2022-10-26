@@ -42,7 +42,7 @@ def main():
             logger.debug('-- success, will sleep until midnight')
             time_to_sleep = seconds_until_midnight()
             sleep_controller.reset()
-            save_csv(config.csv_filename, el_prices)
+            save_csv(logger, config.csv_filename, el_prices)
 
         else:
             logger.debug('-- failure, will backoff ' + str(time_to_sleep) + ' seconds')

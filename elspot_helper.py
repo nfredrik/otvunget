@@ -2,7 +2,7 @@ import json
 import logging
 from pathlib import Path
 from types import SimpleNamespace
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 
 class ElSpotError(Exception):
@@ -33,16 +33,22 @@ def seconds_until_midnight():
     return (midnight - datetime.now()).seconds
 
 
-def save_csv(filename, data: dict) -> None:
-    file_exist = bool(Path(filename).exists())
+def save_csv(logger, filename, data: dict) -> None:
+    def saved_file_date(filename) -> date:
+        return datetime.fromtimestamp(int(Path(filename).stat().st_mtime)).date() if Path(filename).exists() else datetime.fromtimestamp(0).date()
 
+    if datetime.now().date() == saved_file_date(filename):
+        logger.error('-- save_csv: date already saved! ' + str(datetime.now().date()))
+        return
+
+    file_exist = bool(Path(filename).exists())
     with open(filename, 'a') as fh:
         if not file_exist:
             fh.write('date time weekday price\n')
+        sorted_by_hour = sorted(data.items(), key=lambda x: datetime.strptime(x[0], "%Y-%m-%d %H:%M"))
 
-        for d in data.items():
+        for d in sorted_by_hour:
             the_date, price = d
             weekday = datetime.strptime(the_date, "%Y-%m-%d %H:%M").weekday()
-            the_string = the_date + ' ' + str(weekday) + ' ' + price.replace('.', ',') + '\n'
-
+            the_string = f'{the_date} {str(weekday)} ' + price.replace('.', ',') + '\n'
             fh.write(the_string)
