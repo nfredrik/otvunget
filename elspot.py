@@ -47,6 +47,7 @@ def main():
         else:
             logger.debug('-- failure, will backoff ' + str(time_to_sleep) + ' seconds')
 
+        logger.debug('-- will sleep ' + str(time_to_sleep))
         time.sleep(time_to_sleep)
 
 

@@ -30,8 +30,7 @@ def seconds_until_midnight():
     tomorrow = datetime.now() + timedelta(1)
     midnight = datetime(year=tomorrow.year, month=tomorrow.month,
                         day=tomorrow.day, hour=0, minute=0, second=10)
-    return (midnight - datetime.now()).seconds
-
+    return int((midnight - datetime.now()).total_seconds())
 
 def save_csv(logger, filename, data: dict) -> None:
     def saved_file_date(filename) -> date:

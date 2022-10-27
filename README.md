@@ -14,13 +14,21 @@ Skriptet styrs genom en konfiguration:
 |----------------|-------------------------------------------------|-------|
 | attempts       | antal försök mot datakälla vid givet tillfälle  | int   |
 | interval       | tid mellan varje försök vid ett givet tillfälle | int   |
-| poll frequency | deprikerad                                       | int   |
-| backoff_start  | starttid mellan tillfällen att försöka           | int    |
-| backoff_multipel | faktor att öka tiden med mellan försök         | int    |
-| backoff_stop   | maximal tid mellan tillfällen att försöka        | int    |
+| poll frequency | deprikerad                                      | int   |
+| backoff_start  | starttid mellan tillfällen att försöka          | int   |
+| backoff_multipel | faktor att öka tiden med mellan försök        | int   |
+| backoff_stop   | maximal tid mellan tillfällen att försöka       | int   |
 | log level      | nivå på log, fatal till debug                   | string|
 | mock           | mockad datakälla eller inte                     | bool  |
-| filename       | namn på sparade elpriser, json                  | string|
+| json_filename  | path till JSON fil med dagens elpriser          | string|
+| log_filename   | path till loggfil, txt                          | string|
+| csv_filename   | path till CSV fil med alla dagars prise         | string|
+
+JSON-filen innehåller ett dygns priser i json-format.
+CSV-filen innehåller alla ackumulerade dygns priser i formatet
+space-separerade variabler.
+
+Konfigurationsfilen ska lagras på samma plats som skripten.
 
 # Logging
 
