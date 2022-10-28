@@ -21,8 +21,7 @@ class Scraper:
             response = urlopen(Scraper.URL)
             body = response.read()
             response.close()
-            if response.getcode() == Scraper.HTTP_OK:
-                return body.decode("utf-8")
+            if response.getcode() == Scraper.HTTP_OK: return body.decode("utf-8")
 
             self.logging.error('-- get_elspot, error code: ' + response.getcode())
 
@@ -31,11 +30,9 @@ class Scraper:
 
         raise ElSpotCommError('Error: did not get a proper reply')
 
-
     def _get_elspot_mock(self) -> str:
         self.logging.info('-- get_elspot mock data')
         return pathlib.Path('elspot_mock.html').read_text()
-
 
     def get_data(self):
         return self._get_data()

@@ -45,13 +45,11 @@ def main():
         except Exception as e:
             logger.error('-- unknown error ' + str(e))
 
-
         if datetime.now().date() <= repo.saved_file_date():
             logger.debug('-- success, file saved')
             time_to_sleep = seconds_until_midnight()
             sleep_controller.reset()
             save_csv(logger, config.csv_filename, el_prices)
-
 
         logger.debug('-- will sleep,  ' + str(timedelta(seconds=time_to_sleep)))
         time.sleep(time_to_sleep)
