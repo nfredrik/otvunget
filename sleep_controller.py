@@ -6,7 +6,6 @@ class SleepController:
         self.backoff_multipel = config.backoff_multipel
 
     def current_backoff(self) -> int:
-        self.logging.debug('-- backoff ' + str(self.backoff))
         current_backoff = self.backoff
         self.backoff *= self.backoff_multipel
         self.backoff = self.backoff_stop if self.backoff > self.backoff_stop else self.backoff
