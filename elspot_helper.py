@@ -49,5 +49,5 @@ def save_csv(logger, filename, data: dict) -> None:
         for d in sorted_by_hour:
             the_date, price = d
             weekday = datetime.strptime(the_date, "%Y-%m-%d %H:%M").weekday()
-            the_string = the_date + str(weekday) + price.replace('.', ',') + '\n'
+            the_string = the_date + ' ' + str(weekday) + ' ' + price.replace('.', ',') + '\n'
             fh.write(the_string)
