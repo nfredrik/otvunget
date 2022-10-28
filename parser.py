@@ -1,7 +1,8 @@
 import re
 from html.parser import HTMLParser
 
-from elspot_helper import ElSpotError
+
+class ElSpotDataError(Exception): pass
 
 
 class ElSpotHTMLParser(HTMLParser):
@@ -49,7 +50,7 @@ class ElSpotHTMLParser(HTMLParser):
             self.logging.error('-- Error timestamp not included in data!!')
 
         self.logging.error('-- Error some problem with the data!')
-        raise ElSpotError('Error, some problem with data: ' + data)
+        raise ElSpotDataError('Error, some problem with data: ' + data)
 
     def get_elprices(self) -> dict:
         interim, self._all = self._all, {}

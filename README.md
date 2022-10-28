@@ -16,7 +16,7 @@ Skriptet styrs genom en konfiguration:
 | interval       | tid mellan varje försök vid ett givet tillfälle | int   |
 | poll frequency | deprikerad                                      | int   |
 | backoff_start  | starttid mellan tillfällen att försöka          | int   |
-| backoff_multipel | faktor att öka tiden med mellan försök        | int   |
+| backoff_multiple | faktor att öka tiden med mellan försök        | int   |
 | backoff_stop   | maximal tid mellan tillfällen att försöka       | int   |
 | log level      | nivå på log, fatal till debug                   | string|
 | mock           | mockad datakälla eller inte                     | bool  |

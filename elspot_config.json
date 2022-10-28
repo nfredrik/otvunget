@@ -1,9 +1,6 @@
 {
-  "attempts": 2,
-  "interval": 5,
-  "poll_frequency": 15,
   "backoff_start": 5,
-  "backoff_multipel": 2,
+  "backoff_multiple": 2,
   "backoff_stop": 3600,
   "loglevel": "DEBUG",
   "mock": null,
