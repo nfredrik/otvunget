@@ -51,7 +51,7 @@ def main():
             sleep_controller.reset()
             save_csv(logger, config.csv_filename, el_prices)
 
-        logger.debug('-- will sleep,  ' + str(timedelta(seconds=time_to_sleep)) + 'hours')
+        logger.debug('-- will sleep,  ' + str(timedelta(seconds=time_to_sleep)) + ' hours')
         time.sleep(time_to_sleep)
 
 
