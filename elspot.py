@@ -30,7 +30,7 @@ def main():
             repo.save(el_prices)
 
         except ElSpotCommError as e:
-            logger.debug('-- failure on communication, will backoff ' + str(time_to_sleep) + 'seconds')
+            logger.debug('-- failure on communication, will backoff ' + str(time_to_sleep) + ' seconds')
 
         except ElSpotDataError as e:
             logger.debug('-- failure on data, will backoff ' + str(time_to_sleep) + ' seconds')
@@ -51,7 +51,7 @@ def main():
             sleep_controller.reset()
             save_csv(logger, config.csv_filename, el_prices)
 
-        logger.debug('-- will sleep,  ' + str(timedelta(seconds=time_to_sleep)))
+        logger.debug('-- will sleep,  ' + str(timedelta(seconds=time_to_sleep)) + 'hours')
         time.sleep(time_to_sleep)
 
 
