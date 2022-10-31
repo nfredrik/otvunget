@@ -4,6 +4,9 @@ from pathlib import Path
 from types import SimpleNamespace
 from datetime import datetime, timedelta, date
 
+WRITE_APPEND = "a"
+CONFIG_FILE_NAME = 'elspot_config.json'
+
 
 class ElSpotError(Exception):
     pass
@@ -44,7 +47,7 @@ def save_csv(logger, filename, data: dict) -> None:
         return
 
     file_exist = bool(Path(filename).exists())
-    with open(filename, 'a') as fh:
+    with open(filename, WRITE_APPEND) as fh:
         if not file_exist:
             fh.write('date time weekday price\n')
         sorted_by_hour = sorted(data.items(), key=lambda x: datetime.strptime(x[0], "%Y-%m-%d %H:%M"))
@@ -56,4 +59,3 @@ def save_csv(logger, filename, data: dict) -> None:
             fh.write(the_string)
 
 
-CONFIG_FILE_NAME = 'elspot_config.json'
