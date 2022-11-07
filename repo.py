@@ -5,6 +5,7 @@ from pprint import pprint
 
 from elspot_helper import ElSpotError
 
+WRITE_TRUNCATE = 'w'
 
 class Repo:
     def __init__(self, logging, config):
@@ -22,11 +23,10 @@ class Repo:
             if Path(self.filename).exists() else datetime.fromtimestamp(0).date()
 
     def save_2_file(self, data: dict) -> None:
-        if not Repo._today_date(data):
-            raise ElSpotError('Wrong date: ' + list(data.keys())[0])
+        if not Repo._today_date(data): raise ElSpotError('Wrong date: ' + list(data.keys())[0])
 
         self.logging.info('-- save_to_file ...')
-        with open(self.filename, "w") as outfile:
+        with open(self.filename, WRITE_TRUNCATE) as outfile:
             json.dump(data, outfile, indent=2)
 
     @staticmethod
