@@ -40,7 +40,7 @@ def main():
 
         if datetime.now().date() <= repo.saved_file_date():
             logger.debug('-- success, will sleep until midnight')
-            time_to_sleep = seconds_until_midnight()
+            time_to_sleep = seconds_until_midnight(logger)
             sleep_controller.reset()
             save_csv(logger, config.csv_filename, el_prices)
 
