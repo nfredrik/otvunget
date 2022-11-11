@@ -27,17 +27,10 @@ def setup_logger(level, filename):
     return logging.getLogger()
 
 
-def seconds_until_midnight(logger):
-    def summer_time(the_time=datetime.now()) -> bool:
-        sweden_time = the_time.replace(tzinfo=ZoneInfo('Europe/Stockholm'))
-        return sweden_time.hour == sweden_time.astimezone(ZoneInfo('Europe/Moscow')).hour + 1
-
-    hour = 1 if summer_time() else 0
-    logger.debug(f"-- we have {'summer' if summer_time() else 'winter'} time")
-
+def seconds_until_midnight():
     tomorrow = datetime.now() + timedelta(1)
     midnight = datetime(year=tomorrow.year, month=tomorrow.month,
-                        day=tomorrow.day, hour=hour, minute=0, second=10)
+                        day=tomorrow.day, hour=0, minute=0, second=10)
     return int((midnight - datetime.now()).total_seconds())
 
 
