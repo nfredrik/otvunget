@@ -42,12 +42,13 @@ class ElSpotHTMLParser(HTMLParser):
             return
 
         if self._is_price(data):
+            if self._time is None:
+                raise ElSpotDataError('-- Error timestamp not included in data!!')
+
             self._all[self._time] = data.split()[0].replace(',', '.')
             self._time = None
             return
 
-        if self._time is None:
-            self.logging.error('-- Error timestamp not included in data!!')
 
         self.logging.error('-- Error some problem with the data!')
         raise ElSpotDataError('Error, some problem with data: ' + data)

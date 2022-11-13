@@ -16,10 +16,10 @@ def main():
     config = read_config(config_filename=CONFIG_FILE_NAME)
     logger = setup_logger(config.loglevel, config.log_filename)
 
-    scraper = Scraper(logger, config)
+    scraper = Scraper(logging=logger)
     sleep_controller = SleepController(logger, config)
     elspot_parser = ElSpotHTMLParser(logger)
-    repo = Repo(logger, config)
+    repo = Repo(logger, config.json_filename)
     time_to_sleep = 0
     while True:
         try:
