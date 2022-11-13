@@ -1,7 +1,6 @@
 import logging
 
 import pytest
-
 from parser import ElSpotHTMLParser, ElSpotDataError
 
 
