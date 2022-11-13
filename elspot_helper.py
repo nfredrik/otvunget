@@ -1,8 +1,8 @@
 import json
 import logging
+from datetime import datetime, timedelta, date, timezone
 from pathlib import Path
 from types import SimpleNamespace
-from datetime import datetime, timedelta, date
 
 WRITE_APPEND = "a"
 CONFIG_FILE_NAME = 'elspot_config.json'

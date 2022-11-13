@@ -7,7 +7,7 @@ class ElSpotDataError(Exception): pass
 
 class ElSpotHTMLParser(HTMLParser):
     date_pattern = re.compile(r"(\d{4})-(\d{2})-(\d{2})")
-    price_pattern = re.compile(r"(\d{1,4}),(\d{1,4})(.*)")
+    price_pattern = re.compile(r"(-)?(\d{1,4}),(\d{1,4})(.*)")
 
     def __init__(self, logging):
         HTMLParser.__init__(self)
