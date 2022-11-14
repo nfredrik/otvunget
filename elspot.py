@@ -17,7 +17,7 @@ def main():
     logger = setup_logger(config.loglevel, config.log_filename)
 
     scraper = Scraper(logging=logger)
-    sleep_controller = SleepController(logger, config)
+    sleep_controller = SleepController(config)
     elspot_parser = ElSpotHTMLParser(logger)
     repo = Repo(logger, config.json_filename)
     time_to_sleep = 0
