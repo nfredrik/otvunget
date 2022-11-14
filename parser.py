@@ -2,7 +2,8 @@ import re
 from html.parser import HTMLParser
 
 
-class ElSpotDataError(Exception): pass
+class ElSpotDataError(Exception):
+    pass
 
 
 class ElSpotHTMLParser(HTMLParser):
@@ -48,7 +49,6 @@ class ElSpotHTMLParser(HTMLParser):
             self._all[self._time] = data.split()[0].replace(',', '.')
             self._time = None
             return
-
 
         self.logging.error('-- Error some problem with the data!')
         raise ElSpotDataError('Error, some problem with data: ' + data)

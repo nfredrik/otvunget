@@ -29,7 +29,6 @@ class Scraper:
         except URLError as e:
             self.logging.error('-- get_elspot com failure ' + str(e))
 
-
         except Exception as e:
             self.logging.error('-- get_elspot unknown error ' + str(e))
             raise e

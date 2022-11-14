@@ -18,7 +18,8 @@ class Repo:
         return any(datetime.now().strftime('%Y-%m-%d') == item for item in dates)
 
     def save(self, data: dict) -> None:
-        if not Repo._today_date(data): raise ElSpotError('Wrong date: ' + list(data.keys())[0])
+        if not Repo._today_date(data):
+            raise ElSpotError('Wrong date: ' + list(data.keys())[0])
 
         self.logging.info('-- save_to_file ...')
         with open(self.filename, WRITE_TRUNCATE) as outfile:

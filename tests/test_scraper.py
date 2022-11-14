@@ -1,6 +1,4 @@
 import logging
-from dataclasses import dataclass
-from unittest.mock import Mock
 from urllib.error import URLError
 from urllib.request import urlopen
 
