@@ -30,10 +30,10 @@ def main():
             repo.save(el_prices)
 
         except ElSpotCommError as e:
-            logger.debug('-- failure on communication, will backoff ' + str(time_to_sleep) + ' seconds')
+            logger.debug('-- failure on communication, will backoff ' + str(time_to_sleep) + ' seconds' + str(e))
 
         except ElSpotDataError as e:
-            logger.debug('-- failure on data, will backoff ' + str(time_to_sleep) + ' seconds')
+            logger.debug('-- failure on data, will backoff ' + str(time_to_sleep) + ' seconds' + str(e))
 
         except ElSpotError as e:
             logger.error('-- internal error... ' + str(e))
