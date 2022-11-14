@@ -29,7 +29,7 @@ def test_scraper_okay():
     assert 'hello', xr.get_data()
 
 
-def test_scraper_not_okay():
+def test_scraper_status_code_error():
     class Nisse:
         def read(self):
             return 'hello'.encode('utf-8')
@@ -47,7 +47,7 @@ def test_scraper_not_okay():
         xr.get_data()
 
 
-def test_scraper_error():
+def test_scraper_urlerror():
     class Nisse:
         def read(self):
             raise URLError(reason='Aj')
@@ -61,8 +61,37 @@ def test_scraper_error():
     urlopen = Nisse()
 
     xr = Scraper(logging=logging, urler=urlopen)
+    with pytest.raises(URLError):
+        xr.get_data()
+
+
+def test_scraper_urlerror_twice():
+    class Nisse:
+        def __init__(self):
+            self.error = 500
+
+        def set_code(self, code):
+            self.error = code
+
+        def read(self):
+            return 'hello'.encode('utf-8')
+
+        def getcode(self):
+            return self.error
+
+        def close(self):
+            ...
+
+    urlopen = Nisse()
+
+    xr = Scraper(logging=logging, urler=urlopen)
     with pytest.raises(ElSpotCommError):
         xr.get_data()
+
+    urlopen.set_code(200)
+
+    alla = xr.get_data()
+    assert alla
 
 
 def test_scraper_no_encode():

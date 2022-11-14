@@ -19,18 +19,16 @@ class Scraper:
         self.logging.info('-- get_elspot data')
         try:
             response = self.urler or urlopen(Scraper.URL)
-            body = response.read()
-            response.close()
-            if response.getcode() == Scraper.HTTP_OK:
-                return body.decode("utf-8")
-
-            self.logging.error('-- get_elspot, error code: ' + str(response.getcode()))
+            if response.getcode() != Scraper.HTTP_OK:
+                raise ElSpotCommError('Error: did not get a proper reply' + str(response.getcode()))
 
         except URLError as e:
-            self.logging.error('-- get_elspot com failure ' + str(e))
+                self.logging.error('-- get_elspot com failure ' + str(e))
 
         except Exception as e:
             self.logging.error('-- get_elspot unknown error ' + str(e))
             raise e
 
-        raise ElSpotCommError('Error: did not get a proper reply')
+        body = response.read()
+        response.close()
+        return body.decode("utf-8")
