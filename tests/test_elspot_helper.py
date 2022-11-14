@@ -1,8 +1,12 @@
-import time
 import logging
-from elspot_helper import seconds_until_midnight, save_csv
+import time
 from pathlib import Path
+
 import pytest
+
+from elspot_helper import seconds_until_midnight, save_csv
+
+
 @pytest.fixture
 def tempfile(tmpdir):
     return tmpdir + 'nisse.csv'
@@ -13,6 +17,7 @@ def test_midnight():
     time.sleep(1)
     second = seconds_until_midnight()
     assert first > second
+
 
 # TODO: Use a tempfile or file object. Veridy file content??
 # check saved only once a day.

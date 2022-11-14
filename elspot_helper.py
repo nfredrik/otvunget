@@ -1,8 +1,8 @@
 import json
 import logging
+from datetime import datetime, timedelta, date
 from pathlib import Path
 from types import SimpleNamespace
-from datetime import datetime, timedelta, date
 
 WRITE_APPEND = "a"
 CONFIG_FILE_NAME = 'elspot_config.json'
@@ -15,7 +15,8 @@ class ElSpotError(Exception):
 def read_config(config_filename):
     config_filename = str(Path(__file__).with_name(config_filename))
 
-    if not Path(config_filename).exists(): raise ElSpotError('Could not find config file: ' + config_filename)
+    if not Path(config_filename).exists():
+        raise ElSpotError('Could not find config file: ' + config_filename)
 
     with open(config_filename) as fh:
         return json.loads(fh.read(), object_hook=lambda d: SimpleNamespace(**d))
@@ -57,5 +58,3 @@ def save_csv(logger, filename, data: dict) -> None:
             weekday = datetime.strptime(the_date, "%Y-%m-%d %H:%M").weekday()
             the_string = the_date + ' ' + str(weekday) + ' ' + price.replace('.', ',') + '\n'
             fh.write(the_string)
-
-

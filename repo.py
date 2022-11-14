@@ -1,7 +1,6 @@
 import json
 from datetime import datetime, date
 from pathlib import Path
-from pprint import pprint
 
 from elspot_helper import ElSpotError
 
@@ -24,7 +23,6 @@ class Repo:
         self.logging.info('-- save_to_file ...')
         with open(self.filename, WRITE_TRUNCATE) as outfile:
             json.dump(data, outfile, indent=2)
-
 
     def saved_file_date(self) -> date:
         return datetime.fromtimestamp(int(Path(self.filename).stat().st_ctime)).date() \

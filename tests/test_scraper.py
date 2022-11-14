@@ -1,11 +1,13 @@
+import logging
+from dataclasses import dataclass
+from unittest.mock import Mock
+from urllib.error import URLError
+from urllib.request import urlopen
+
 import pytest
 
 from scraper import Scraper, ElSpotCommError
-import logging
-from dataclasses import dataclass
-from urllib.request import urlopen
-from unittest.mock import Mock
-from urllib.error import URLError
+
 
 @pytest.mark.skip
 def test_scraper():
@@ -45,6 +47,7 @@ def test_scraper_not_okay():
     xr = Scraper(logging=logging, urler=urlopen)
     with pytest.raises(ElSpotCommError):
         xr.get_data()
+
 
 def test_scraper_error():
     class Nisse:
