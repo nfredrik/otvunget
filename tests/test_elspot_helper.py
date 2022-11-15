@@ -4,12 +4,21 @@ from pathlib import Path
 
 import pytest
 
-from elspot_helper import seconds_until_midnight, save_csv
+from elspot_helper import seconds_until_midnight, save_csv, read_config,CONFIG_FILE_NAME,ElSpotError
 
 
 @pytest.fixture
 def tempfile(tmpdir):
     return tmpdir + 'nisse.csv'
+
+
+def test_config_normal():
+    mr = read_config(CONFIG_FILE_NAME)
+    assert mr.loglevel == "DEBUG"
+
+def test_config_no_config_file():
+    with pytest.raises(ElSpotError):
+        mr = read_config('dummy.json')
 
 
 def test_midnight():

@@ -47,9 +47,8 @@ def save_csv(logger, filename, data: dict) -> None:
         logger.error('-- save_csv: date already saved! ' + str(datetime.now().date()))
         return
 
-    file_exist = bool(Path(filename).exists())
     with open(filename, WRITE_APPEND) as fh:
-        if not file_exist:
+        if not Path(filename).exists():
             fh.write('date time weekday price\n')
         sorted_by_hour = sorted(data.items(), key=lambda x: datetime.strptime(x[0], "%Y-%m-%d %H:%M"))
 
