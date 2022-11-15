@@ -8,7 +8,7 @@ DATA = f"""
  <body data-cmplz=1>
  <tbody>
                  <tr class="bg-gray-300 hover:bg-gray-100">
-             <td class="text-left pt-2 pl-2">{datetime.now().strftime('%Y-%m-%d')}</td>
+             <td class="text-left pt-2 pl-2">{datetime.now().strftime('%Y-%m-%d %H:%M')}</td>
                                  <td class="text-right pt-2 pr-2">0,08 öre/kWh</td>
                              </tr>
                      <tr class="bg-gray-200 hover:bg-gray-100">
@@ -40,3 +40,5 @@ def test_main():
     a_mock = aMock()
     rty = main(a_mock)
     assert rty == 1
+
+    # assert that jsonfile and csvfile created!
