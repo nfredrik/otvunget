@@ -1,6 +1,5 @@
 class SleepController:
-    def __init__(self, logging, config):
-        self.logging = logging
+    def __init__(self, config):
         self.backoff = self.backoff_start = config.backoff_start
         self.backoff_stop = config.backoff_stop
         self.backoff_multiple = config.backoff_multiple

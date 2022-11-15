@@ -16,10 +16,10 @@ def main():
     config = read_config(config_filename=CONFIG_FILE_NAME)
     logger = setup_logger(config.loglevel, config.log_filename)
 
-    scraper = Scraper(logger, config)
-    sleep_controller = SleepController(logger, config)
+    scraper = Scraper(logging=logger)
+    sleep_controller = SleepController(config)
     elspot_parser = ElSpotHTMLParser(logger)
-    repo = Repo(logger, config)
+    repo = Repo(logger, config.json_filename)
     time_to_sleep = 0
     while True:
         try:
@@ -30,10 +30,10 @@ def main():
             repo.save(el_prices)
 
         except ElSpotCommError as e:
-            logger.debug('-- failure on communication, will backoff ' + str(time_to_sleep) + ' seconds')
+            logger.debug('-- failure on communication, will backoff ' + str(time_to_sleep) + ' seconds' + str(e))
 
         except ElSpotDataError as e:
-            logger.debug('-- failure on data, will backoff ' + str(time_to_sleep) + ' seconds')
+            logger.debug('-- failure on data, will backoff ' + str(time_to_sleep) + ' seconds' + str(e))
 
         except ElSpotError as e:
             logger.error('-- internal error... ' + str(e))
