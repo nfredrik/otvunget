@@ -16,7 +16,6 @@ Skriptet styrs genom en konfiguration:
 | backoff_multiple | faktor att öka tiden med mellan försök | int   |
 | backoff_stop  | maximal tid mellan tillfällen att försöka | int   |
 | loglevel      | nivå på log, fatal till debug          | string|
-| mock          | mockad datakälla eller inte            | bool  |
 | json_filename | path till JSON fil med dagens elpriser | string|
 | log_filename  | path till loggfil, txt                 | string|
 | csv_filename  | path till CSV fil med alla dagars priser | string|
@@ -35,6 +34,10 @@ Vid parsning av datat loggar skriptet om datat inte är konsistent, exvis
 inget timestamp eller felaktikt format på priset.
 
 Vid sparande till fil loggar skriptet om data inte har dagens datum.
+
+# Övrigt
+
+Övergång till sommartid ger odefinierat resultat. Hemsidans utseende för dubbeltimmen är okänt. Enligt direktiv från EU ska dock olika sommartid/vintertid inte brukas längre.
 
 ## Använding
 `$ ./elspot.py`
