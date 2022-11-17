@@ -9,12 +9,13 @@ from repo import Repo
 from scraper import Scraper, ElSpotCommError
 from sleep_controller import SleepController
 
-
 # The config file path is a file with the following name in the same directory as this script itself
 
+ERROR = 42
 
-def main(mock_scraper=None):
-    config = read_config(config_filename=CONFIG_FILE_NAME)
+
+def main(mock_scraper=None, config_filename=CONFIG_FILE_NAME):
+    config = read_config(config_filename=config_filename)
     logger = setup_logger(config.loglevel, config.log_filename)
 
     scraper = mock_scraper or Scraper(logging=logger)
@@ -41,7 +42,7 @@ def main(mock_scraper=None):
 
         except KeyboardInterrupt:
             logger.error('-- user killed the script!!...')
-            return 1
+            return ERROR
 
         except Exception as e:
             logger.error('-- unknown error ' + str(e))

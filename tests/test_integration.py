@@ -1,6 +1,9 @@
+import os
+import json
+from pathlib import Path
+import pytest
 from datetime import datetime
-from elspot import main
-
+from elspot import main, ERROR
 
 DATA = f"""
  <!doctype html>
@@ -24,21 +27,35 @@ DATA = f"""
  </html>
  """
 
-class aMock():
+
+class ScraperMock():
     def __init__(self):
         self.cntr = 0
 
     def get_data(self) -> str:
-        if self.cntr == 0:
-            self.cntr+=1
-            return DATA
+        if self.cntr != 0:
+            raise KeyboardInterrupt
 
-        raise KeyboardInterrupt
+        self.cntr += 1
+        return DATA
 
 
-def test_main():
-    a_mock = aMock()
-    rty = main(a_mock)
-    assert rty == 1
+@pytest.fixture
+def configfile():
+    filename = (Path.cwd().parent / 'olle.json').as_posix()
+    with open(filename, 'w') as fh:
+        fh.write(json.dumps({'json_filename': 'nisse.json', 'csv_filename': 'file.csv', 'loglevel': 'DEBUG',
+                             'log_filename': 'loggen.log', "backoff_start": 5,
+                             "backoff_multiple": 2,
+                             "backoff_stop": 3600}, indent=4))
+    return 'olle.json'
+
+
+def test_main(configfile):
+    scraper_mock = ScraperMock()
+    rty = main(scraper_mock, config_filename=configfile)
+    assert rty == ERROR
+    assert (Path.cwd()/'nisse.json').exists()
+    assert (Path.cwd()/'file.csv').exists()
 
     # assert that jsonfile and csvfile created!
