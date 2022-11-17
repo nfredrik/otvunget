@@ -28,34 +28,42 @@ DATA = f"""
  """
 
 
-class ScraperMock():
+class ScraperMock:
     def __init__(self):
         self.cntr = 0
 
     def get_data(self) -> str:
-        if self.cntr != 0:
+        if self.cntr:
             raise KeyboardInterrupt
 
         self.cntr += 1
         return DATA
 
 
+JSON_FILE = 'nisse.json'
+CSV_FILE = 'file.csv'
+CONFIG_FILE = 'olle.json'
+
+
 @pytest.fixture
 def configfile():
-    filename = (Path.cwd().parent / 'olle.json').as_posix()
+    filename = (Path.cwd().parent / CONFIG_FILE).as_posix()
     with open(filename, 'w') as fh:
-        fh.write(json.dumps({'json_filename': 'nisse.json', 'csv_filename': 'file.csv', 'loglevel': 'DEBUG',
+        fh.write(json.dumps({'json_filename': JSON_FILE, 'csv_filename': CSV_FILE, 'loglevel': 'DEBUG',
                              'log_filename': 'loggen.log', "backoff_start": 5,
                              "backoff_multiple": 2,
                              "backoff_stop": 3600}, indent=4))
-    return 'olle.json'
+    return CONFIG_FILE
 
 
 def test_main(configfile):
+    if (Path.cwd() / JSON_FILE).exists():
+        os.remove((Path.cwd() / JSON_FILE).as_posix())
+    if (Path.cwd() / CSV_FILE).exists():
+        os.remove((Path.cwd() / CSV_FILE).as_posix())
+
     scraper_mock = ScraperMock()
     rty = main(scraper_mock, config_filename=configfile)
     assert rty == ERROR
-    assert (Path.cwd()/'nisse.json').exists()
-    assert (Path.cwd()/'file.csv').exists()
-
-    # assert that jsonfile and csvfile created!
+    assert (Path.cwd() / JSON_FILE).exists()
+    assert (Path.cwd() / CSV_FILE).exists()

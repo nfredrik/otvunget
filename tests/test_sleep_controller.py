@@ -26,7 +26,7 @@ def test_sleep_reset(config):
     sleep_controller.current_backoff()
     assert sleep_controller.current_backoff() > 10
     sleep_controller.reset()
-    assert sleep_controller.current_backoff() == 5
+    assert sleep_controller.current_backoff() == config.backoff_start
 
 
 def test_sleep_controller_reached_max(config):
@@ -35,4 +35,4 @@ def test_sleep_controller_reached_max(config):
     for _ in range(100):
         sleep_controller.current_backoff()
 
-    assert sleep_controller.current_backoff() == 100
+    assert sleep_controller.current_backoff() == config.backoff_stop

@@ -1,24 +1,37 @@
 import logging
 import time
+import json
 from pathlib import Path
 
 import pytest
 
 from elspot_helper import seconds_until_midnight, save_csv, read_config,CONFIG_FILE_NAME,ElSpotError
 
+JSON_FILE = 'nisse.json'
+CSV_FILE = 'file.csv'
+CONFIG_FILE = 'olle.json'
 
 @pytest.fixture
 def tempfile(tmpdir):
     return tmpdir + 'nisse.csv'
 
+@pytest.fixture
+def configfile():
+    filename = (Path.cwd().parent / CONFIG_FILE).as_posix()
+    with open(filename, 'w') as fh:
+        fh.write(json.dumps({'json_filename': JSON_FILE, 'csv_filename': CSV_FILE, 'loglevel': 'FATAL',
+                             'log_filename': 'loggen.log', "backoff_start": 5,
+                             "backoff_multiple": 2,
+                             "backoff_stop": 3600}, indent=4))
+    return CONFIG_FILE
 
-def test_config_normal():
-    mr = read_config(CONFIG_FILE_NAME)
-    assert mr.loglevel == "DEBUG"
+def test_config_normal(configfile):
+    mr = read_config(configfile)
+    assert mr.loglevel == "FATAL"
 
 def test_config_no_config_file():
     with pytest.raises(ElSpotError):
-        mr = read_config('dummy.json')
+        read_config('dummy.json')
 
 
 def test_midnight():
