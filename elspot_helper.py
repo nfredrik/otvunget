@@ -14,6 +14,7 @@ class ElSpotError(Exception):
 
 def read_config(config_filename):
     config_filename = str(Path(__file__).with_name(config_filename))
+    #config_filename = str(Path.cwd().with_name(config_filename))
 
     if not Path(config_filename).exists():
         raise ElSpotError('Could not find config file: ' + config_filename)

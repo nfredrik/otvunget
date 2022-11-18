@@ -22,12 +22,12 @@ def configfile(tmpdir):
         fh.write(json.dumps({'json_filename': JSON_FILE, 'csv_filename': CSV_FILE, 'loglevel': 'FATAL',
                              'log_filename': 'loggen.log', "backoff_start": 5,
                              "backoff_multiple": 2,
-                             "backoff_stop": 3600}, indent=4))
+                             "backoff_stop": 3500}, indent=4))
     return CONFIG_FILE
 
 def test_config_normal(configfile):
-    mr = read_config(configfile)
-    assert mr.loglevel == "FATAL"
+    mr = read_config(CONFIG_FILE_NAME)
+    assert mr.loglevel == "DEBUG"
 
 def test_config_no_config_file():
     with pytest.raises(ElSpotError):
