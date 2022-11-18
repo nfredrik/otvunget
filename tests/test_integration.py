@@ -46,10 +46,10 @@ CONFIG_FILE = 'olle.json'
 
 
 @pytest.fixture
-def configfile():
-    filename = (Path.cwd().parent / CONFIG_FILE).as_posix()
+def configfile(tmpdir):
+    filename = f"{str(tmpdir)}/{CONFIG_FILE}"
     with open(filename, 'w') as fh:
-        fh.write(json.dumps({'json_filename': JSON_FILE, 'csv_filename': CSV_FILE, 'loglevel': 'DEBUG',
+        fh.write(json.dumps({'json_filename': JSON_FILE, 'csv_filename': CSV_FILE, 'loglevel': 'FATAL',
                              'log_filename': 'loggen.log', "backoff_start": 5,
                              "backoff_multiple": 2,
                              "backoff_stop": 3600}, indent=4))
