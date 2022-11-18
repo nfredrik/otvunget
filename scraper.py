@@ -24,6 +24,7 @@ class Scraper:
 
         except URLError as e:
             self.logging.error('-- get_elspot com failure ' + str(e))
+            raise ElSpotCommError('Error: did not get a proper reply ' + str(e.message))
 
         except Exception as e:
             self.logging.error('-- get_elspot unknown error ' + str(e))

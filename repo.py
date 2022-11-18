@@ -4,10 +4,10 @@ from pathlib import Path
 
 from elspot_helper import ElSpotError
 
-WRITE_TRUNCATE = 'w'
-
 
 class Repo:
+    WRITE_TRUNCATE = 'w'
+
     def __init__(self, logging, json_filename):
         self.filename = json_filename
         self.logging = logging
@@ -22,7 +22,7 @@ class Repo:
             raise ElSpotError('Wrong date: ' + list(data.keys())[0])
 
         self.logging.info('-- save_to_file ...')
-        with open(self.filename, WRITE_TRUNCATE) as outfile:
+        with open(self.filename, Repo.WRITE_TRUNCATE) as outfile:
             json.dump(data, outfile, indent=2)
 
     def saved_file_date(self) -> date:

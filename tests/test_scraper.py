@@ -1,7 +1,7 @@
 import logging
 from urllib.error import URLError
 from urllib.request import urlopen
-
+from http import HTTPStatus
 import pytest
 
 from scraper import Scraper, ElSpotCommError
@@ -19,7 +19,7 @@ def test_scraper_okay():
             return 'hello'.encode('utf-8')
 
         def getcode(self):
-            return 200
+            return HTTPStatus.OK
 
         def close(self):
             ...
@@ -35,7 +35,7 @@ def test_scraper_status_code_error():
             return 'hello'.encode('utf-8')
 
         def getcode(self):
-            return 500
+            return HTTPStatus.INTERNAL_SERVER_ERROR
 
         def close(self):
             ...
@@ -53,7 +53,7 @@ def test_scraper_urlerror():
             raise URLError(reason='Aj')
 
         def getcode(self):
-            return 200
+            return HTTPStatus.OK
 
         def close(self):
             ...
@@ -68,7 +68,7 @@ def test_scraper_urlerror():
 def test_scraper_urlerror_twice():
     class Nisse:
         def __init__(self):
-            self.error = 500
+            self.error = HTTPStatus.INTERNAL_SERVER_ERROR
 
         def set_code(self, code):
             self.error = code
@@ -88,7 +88,7 @@ def test_scraper_urlerror_twice():
     with pytest.raises(ElSpotCommError):
         xr.get_data()
 
-    urlopen.set_code(200)
+    urlopen.set_code(HTTPStatus.OK)
 
     alla = xr.get_data()
     assert alla
@@ -100,7 +100,7 @@ def test_scraper_no_encode():
             return 'helloa'
 
         def getcode(self):
-            return 200
+            return HTTPStatus.OK
 
         def close(self):
             ...

@@ -35,6 +35,8 @@ inget timestamp eller felaktikt format på priset.
 
 Vid sparande till fil loggar skriptet om data inte har dagens datum.
 
+Loggnivåer, se [lognivåer hos python](https://docs.python.org/3/library/logging.html#levels)
+
 # Övrigt
 
 Övergång till sommartid ger odefinierat resultat. Hemsidans utseende för dubbeltimmen är okänt. Enligt direktiv från EU ska dock olika sommartid/vintertid inte brukas längre.
