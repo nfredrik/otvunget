@@ -65,5 +65,5 @@ def test_main(configfile):
     scraper_mock = ScraperMock()
     rty = main(scraper_mock)
     assert rty == ERROR
-    #assert (Path.cwd() / JSON_FILE).exists()
-    #assert (Path.cwd() / CSV_FILE).exists()
+    # assert (Path.cwd() / JSON_FILE).exists()
+    # assert (Path.cwd() / CSV_FILE).exists()

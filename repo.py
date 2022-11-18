@@ -5,7 +5,6 @@ from pathlib import Path
 from elspot_helper import ElSpotError
 
 
-
 class Repo:
     WRITE_TRUNCATE = 'w'
 

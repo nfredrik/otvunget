@@ -5,15 +5,17 @@ from pathlib import Path
 
 import pytest
 
-from elspot_helper import seconds_until_midnight, save_csv, read_config,CONFIG_FILE_NAME,ElSpotError
+from elspot_helper import seconds_until_midnight, save_csv, read_config, CONFIG_FILE_NAME, ElSpotError
 
 JSON_FILE = 'nisse.json'
 CSV_FILE = 'file.csv'
 CONFIG_FILE = 'olle.json'
 
+
 @pytest.fixture
 def tempfile(tmpdir):
     return tmpdir + 'nisse.csv'
+
 
 @pytest.fixture
 def configfile(tmpdir):
@@ -25,9 +27,11 @@ def configfile(tmpdir):
                              "backoff_stop": 3500}, indent=4))
     return CONFIG_FILE
 
+
 def test_config_normal(configfile):
     mr = read_config(CONFIG_FILE_NAME)
     assert mr.loglevel == "DEBUG"
+
 
 def test_config_no_config_file():
     with pytest.raises(ElSpotError):

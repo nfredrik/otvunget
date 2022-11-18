@@ -1,5 +1,5 @@
 import pytest
-from repo import Repo,ElSpotError
+from repo import Repo, ElSpotError
 import logging
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -17,7 +17,7 @@ def test_repo(tmpfile):
     data = {
         today: "1.03",
         later: "0.32"
-       }
+    }
 
     repo.save(data)
     assert Path(tmpfile).exists()
@@ -30,7 +30,7 @@ def test_repo_file_exist(tmpfile):
     data = {
         today: "1.03",
         later: "0.32"
-       }
+    }
 
     repo.save(data)
     assert repo.saved_file_date() == datetime.now().date()
