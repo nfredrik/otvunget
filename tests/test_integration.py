@@ -20,7 +20,7 @@ DATA = f"""
                              </tr>
                      <tr class="bg-gray-300 hover:bg-gray-100">
              <td class="text-left pt-2 pl-2">2022-10-11 02:00</td>
-                                 <td class="text-right pt-2 pr-2">0,45 öre/kWh</td>                         
+                                 <td class="text-right pt-2 pr-2">0,45 öre/kWh</td>
                            </tr>
                              </tbody>
  </body>
