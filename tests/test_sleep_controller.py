@@ -1,17 +1,7 @@
 from dataclasses import dataclass
 import pytest
 from sleep_controller import SleepController
-
-
-@pytest.fixture()
-def config():
-    @dataclass
-    class Config:
-        backoff_start: int = 5
-        backoff_multiple: int = 2
-        backoff_stop: int = 100
-
-    return Config()
+from tests.conftest import config
 
 
 def test_sleep_controller(config):

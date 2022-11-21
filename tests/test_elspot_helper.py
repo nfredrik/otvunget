@@ -17,17 +17,6 @@ def tempfile(tmpdir):
     return tmpdir + 'nisse.csv'
 
 
-@pytest.fixture
-def configfile(tmpdir):
-    filename = f"{str(tmpdir)}/{CONFIG_FILE}"
-    with open(filename, 'w') as fh:
-        fh.write(json.dumps({'json_filename': JSON_FILE, 'csv_filename': CSV_FILE, 'loglevel': 'FATAL',
-                             'log_filename': 'loggen.log', "backoff_start": 5,
-                             "backoff_multiple": 2,
-                             "backoff_stop": 3500}, indent=4))
-    return CONFIG_FILE
-
-
 def test_config_normal(configfile):
     mr = read_config(CONFIG_FILE_NAME)
     assert mr.loglevel == "DEBUG"

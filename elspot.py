@@ -30,15 +30,9 @@ def main(mock_scraper=None, config_filename=CONFIG_FILE_NAME):
             elspot_parser.feed(data)
             el_prices = elspot_parser.get_elprices()
             repo.save(el_prices)
-        except ElSpotCommError as e:
-            logger.debug('-- failure on communication, will backoff ' + str(time_to_sleep) + ' seconds' + str(e))
-
-        except ElSpotDataError as e:
-            logger.debug('-- failure on data, will backoff ' + str(time_to_sleep) + ' seconds' + str(e))
+        except (ElSpotCommError, ElSpotDataError, ElSpotError) as e:
+            logger.debug('-- failure , will backoff ' + str(time_to_sleep) + ' seconds' + str(e))
             del data
-
-        except ElSpotError as e:
-            logger.error('-- internal error... ' + str(e))
 
         except KeyboardInterrupt:
             logger.error('-- user killed the script!!...')
