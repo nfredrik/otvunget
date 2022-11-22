@@ -4,6 +4,7 @@ from urllib.request import urlopen
 
 from parser import ElSpotHTMLParser
 from scraper import Scraper
+import pytest
 
 
 def assert_content(response, content=None, mimetype="text/html"):
@@ -17,7 +18,7 @@ def assert_content(response, content=None, mimetype="text/html"):
     body = response.read()
     assert len(body) > 1, "Expected content size to be bigger than 1!"
 
-
+@pytest.mark.integration
 def test_elspot_website_any_content():
     response = urlopen(Scraper.URL)
     assert response.getcode() == Scraper.HTTP_OK
@@ -40,8 +41,8 @@ def test_elspot_website_compatible():
     prices = it_all.values()
     date_pattern = ElSpotHTMLParser.date_pattern
     prices_pattern = re.compile(r"(-)?(\d{1,4}).(\d{1,4})(.*)")
-    result = all([date_pattern.match(the_date) is not None for the_date in dates])
+    result = all(date_pattern.match(the_date) is not None for the_date in dates)
     assert result
 
-    result2 = [prices_pattern.match(price) is not None for price in prices]
-    assert all(result2)
+    result2 = all(prices_pattern.match(price) is not None for price in prices)
+    assert result2
