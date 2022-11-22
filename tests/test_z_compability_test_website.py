@@ -1,7 +1,10 @@
-from urllib.request import urlopen
-from scraper import Scraper
-from parser import ElSpotHTMLParser
 import logging
+import re
+from urllib.request import urlopen
+
+from parser import ElSpotHTMLParser
+from scraper import Scraper
+
 
 def assert_content(response, content=None, mimetype="text/html"):
         msg = "No Content-Type header found"
@@ -34,3 +37,13 @@ def test_elspot_website_compatible():
         tm.feed(body)
         it_all = tm.get_elprices()
         assert isinstance(it_all, dict)
+
+        dates = it_all.keys()
+        prices = it_all.values()
+        date_pattern = ElSpotHTMLParser.date_pattern
+        prices_pattern =   re.compile(r"(-)?(\d{1,4}).(\d{1,4})(.*)")
+        result = all([date_pattern.match(the_date) is not None  for the_date in dates])
+        assert result
+
+        result2 = [prices_pattern.match(price) is not None for price in prices]
+        assert all(result2)
