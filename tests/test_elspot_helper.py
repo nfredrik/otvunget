@@ -1,6 +1,6 @@
+import json
 import logging
 import time
-import json
 from pathlib import Path
 
 import pytest

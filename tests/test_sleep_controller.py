@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+
 import pytest
+
 from sleep_controller import SleepController
 from tests.conftest import config
 
