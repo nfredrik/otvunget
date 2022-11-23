@@ -1,6 +1,4 @@
 from sleep_controller import SleepController
-from tests.conftest import config
-
 
 def test_sleep_controller(config):
     sleep_controller = SleepController(config)

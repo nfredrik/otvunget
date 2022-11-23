@@ -18,6 +18,7 @@ def assert_content(response, content=None, mimetype="text/html"):
     body = response.read()
     assert len(body) > 1, "Expected content size to be bigger than 1!"
 
+
 @pytest.mark.integration
 def test_elspot_website_any_content():
     response = urlopen(Scraper.URL)
@@ -46,3 +47,4 @@ def test_elspot_website_compatible():
 
     result2 = all(prices_pattern.match(price) is not None for price in prices)
     assert result2
+
