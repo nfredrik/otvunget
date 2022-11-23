@@ -47,4 +47,3 @@ def test_elspot_website_compatible():
 
     result2 = all(prices_pattern.match(price) is not None for price in prices)
     assert result2
-

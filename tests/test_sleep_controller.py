@@ -1,5 +1,6 @@
 from sleep_controller import SleepController
 
+
 def test_sleep_controller(config):
     sleep_controller = SleepController(config)
     assert sleep_controller.current_backoff() < sleep_controller.backoff_start * 2
