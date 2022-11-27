@@ -1,4 +1,5 @@
 import json
+import logging
 from datetime import datetime, date
 from pathlib import Path
 
@@ -8,7 +9,7 @@ from elspot_helper import ElSpotError
 class Repo:
     WRITE_TRUNCATE = 'w'
 
-    def __init__(self, logging, json_filename):
+    def __init__(self, logging:logging.Logger, json_filename:str):
         self.filename = json_filename
         self.logging = logging
 

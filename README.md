@@ -43,3 +43,4 @@ Loggnivåer, se [lognivåer hos python](https://docs.python.org/3/library/logging.
 
 ## Använding
 `$ ./elspot.py`
+

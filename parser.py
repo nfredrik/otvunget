@@ -18,15 +18,15 @@ class ElSpotHTMLParser(HTMLParser):
         self._time = None
 
     @staticmethod
-    def _td_tag(tag) -> bool:
+    def _td_tag(tag:str) -> bool:
         return tag == 'td'
 
     @staticmethod
-    def _is_date(data) -> bool:
+    def _is_date(data:str) -> bool:
         return ElSpotHTMLParser.date_pattern.match(data) is not None
 
     @staticmethod
-    def _is_price(data) -> bool:
+    def _is_price(data:str) -> bool:
         return ElSpotHTMLParser.price_pattern.match(data) is not None
 
     def handle_starttag(self, tag, attrs):

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-import time
 import sys
+import time
 from datetime import datetime, timedelta
 
 from elspot_helper import ElSpotError, setup_logger, read_config, seconds_until_midnight, save_csv, CONFIG_FILE_NAME
@@ -25,10 +25,10 @@ def main(mock_scraper=None, config_filename=CONFIG_FILE_NAME):
     time_to_sleep = 0
     while True:
         try:
-            time_to_sleep = sleep_controller.current_backoff()
+            time_to_sleep: int = sleep_controller.current_backoff()
             data = scraper.get_data()
             elspot_parser.feed(data)
-            el_prices = elspot_parser.get_elprices()
+            el_prices: dict = elspot_parser.get_elprices()
             repo.save(el_prices)
         except (ElSpotCommError, ElSpotDataError, ElSpotError) as e:
             logger.debug('-- failure , will backoff ' + str(time_to_sleep) + ' seconds' + str(e))
@@ -43,7 +43,7 @@ def main(mock_scraper=None, config_filename=CONFIG_FILE_NAME):
 
         if datetime.now().date() <= repo.saved_file_date():
             logger.debug('-- success, file saved')
-            time_to_sleep = seconds_until_midnight() if not mock_scraper else 0
+            time_to_sleep: int = seconds_until_midnight() if not mock_scraper else 0
             sleep_controller.reset()
             save_csv(logger, config.csv_filename, el_prices)
 

@@ -8,11 +8,12 @@ WRITE_APPEND = "a"
 CONFIG_FILE_NAME = 'elspot_config.json'
 
 
+# TODO: rewrite with better error handling ....
 class ElSpotError(Exception):
     pass
 
 
-def read_config(config_filename):
+def read_config(config_filename: str) -> dict:
     config_filename = str(Path(__file__).with_name(config_filename))
 
     if not Path(config_filename).exists():
@@ -22,7 +23,7 @@ def read_config(config_filename):
         return json.loads(fh.read(), object_hook=lambda d: SimpleNamespace(**d))
 
 
-def setup_logger(level, filename):
+def setup_logger(level, filename: str) -> logging.Logger:
     logging.basicConfig(filename=filename,
                         format='%(asctime)s %(levelname)-8s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
@@ -31,14 +32,14 @@ def setup_logger(level, filename):
     return logging.getLogger()
 
 
-def seconds_until_midnight():
+def seconds_until_midnight() -> int:
     tomorrow = datetime.now() + timedelta(1)
     midnight = datetime(year=tomorrow.year, month=tomorrow.month,
                         day=tomorrow.day, hour=0, minute=0, second=10)
     return int((midnight - datetime.now()).total_seconds())
 
 
-def save_csv(logger, filename, data: dict) -> None:
+def save_csv(logger: logging.Logger, filename: str, data: dict) -> None:
     def saved_file_date(filename) -> date:
         return datetime.fromtimestamp(int(Path(filename).stat().st_mtime)).date() if Path(
             filename).exists() else datetime.fromtimestamp(0).date()
