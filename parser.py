@@ -19,7 +19,7 @@ class ElSpotHTMLParser(HTMLParser):
 
     @staticmethod
     def _td_tag(tag: str) -> bool:
-        return tag == 'td'
+        return tag == "td"
 
     @staticmethod
     def _is_date(data: str) -> bool:
@@ -44,18 +44,20 @@ class ElSpotHTMLParser(HTMLParser):
 
         if self._is_price(data):
             if self._time is None:
-                raise ElSpotDataError('-- Error timestamp not included in data!!')
+                raise ElSpotDataError(
+                    "-- Error timestamp not included in data!!"
+                )
 
-            self._all[self._time] = data.split()[0].replace(',', '.')
+            self._all[self._time] = data.split()[0].replace(",", ".")
             self._time = None
             return
 
-        self.logging.error('-- Error some problem with the data!')
-        raise ElSpotDataError('Error, some problem with data: ' + str(data))
+        self.logging.error("-- Error some problem with the data!")
+        raise ElSpotDataError("Error, some problem with data: " + str(data))
 
     def get_elprices(self) -> dict:
         if not self._all:
-            raise ElSpotDataError('Error, no data was parsed!')
+            raise ElSpotDataError("Error, no data was parsed!")
 
         interim, self._all = self._all, {}
         return interim

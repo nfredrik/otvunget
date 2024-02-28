@@ -40,19 +40,29 @@ class ScraperMock:
         return DATA
 
 
-JSON_FILE = 'nisse.json'
-CSV_FILE = 'file.csv'
-CONFIG_FILE = 'olle.json'
+JSON_FILE = "nisse.json"
+CSV_FILE = "file.csv"
+CONFIG_FILE = "olle.json"
 
 
 @pytest.fixture
 def configfile(tmpdir):
     filename = f"{str(tmpdir)}/{CONFIG_FILE}"
-    with open(filename, 'w') as fh:
-        fh.write(json.dumps({'json_filename': JSON_FILE, 'csv_filename': CSV_FILE, 'loglevel': 'FATAL',
-                             'log_filename': 'loggen.log', "backoff_start": 5,
-                             "backoff_multiple": 2,
-                             "backoff_stop": 3600}, indent=4))
+    with open(filename, "w") as fh:
+        fh.write(
+            json.dumps(
+                {
+                    "json_filename": JSON_FILE,
+                    "csv_filename": CSV_FILE,
+                    "loglevel": "FATAL",
+                    "log_filename": "loggen.log",
+                    "backoff_start": 5,
+                    "backoff_multiple": 2,
+                    "backoff_stop": 3600,
+                },
+                indent=4,
+            )
+        )
     return CONFIG_FILE
 
 

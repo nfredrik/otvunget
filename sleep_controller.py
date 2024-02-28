@@ -7,7 +7,11 @@ class SleepController:
     def current_backoff(self) -> int:
         current_backoff = self.backoff
         self.backoff *= self.backoff_multiple
-        self.backoff = self.backoff_stop if self.backoff > self.backoff_stop else self.backoff
+        self.backoff = (
+            self.backoff_stop
+            if self.backoff > self.backoff_stop
+            else self.backoff
+        )
         return current_backoff
 
     def reset(self) -> None:

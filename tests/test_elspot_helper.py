@@ -4,16 +4,22 @@ from pathlib import Path
 
 import pytest
 
-from elspot_helper import seconds_until_midnight, save_csv, read_config, CONFIG_FILE_NAME, ElSpotError
+from elspot_helper import (
+    seconds_until_midnight,
+    save_csv,
+    read_config,
+    CONFIG_FILE_NAME,
+    ElSpotError,
+)
 
-JSON_FILE = 'nisse.json'
-CSV_FILE = 'file.csv'
-CONFIG_FILE = 'olle.json'
+JSON_FILE = "nisse.json"
+CSV_FILE = "file.csv"
+CONFIG_FILE = "olle.json"
 
 
 @pytest.fixture
 def tempfile(tmpdir):
-    return tmpdir + 'nisse.csv'
+    return tmpdir + "nisse.csv"
 
 
 def test_config_normal(configfile):
@@ -23,7 +29,7 @@ def test_config_normal(configfile):
 
 def test_config_no_config_file():
     with pytest.raises(ElSpotError):
-        read_config('dummy.json')
+        read_config("dummy.json")
 
 
 def test_midnight():
@@ -37,5 +43,7 @@ def test_midnight():
 # check saved only once a day.
 # check of sorted on time!
 def test_save_csv(tempfile):
-    save_csv(logger=logging, filename=tempfile, data={"2022-11-11 06:00": "0.90"})
+    save_csv(
+        logger=logging, filename=tempfile, data={"2022-11-11 06:00": "0.90"}
+    )
     assert Path(tempfile).exists()

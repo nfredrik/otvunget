@@ -16,7 +16,7 @@ def test_scraper():
 def test_scraper_okay():
     class Nisse:
         def read(self):
-            return 'hello'.encode('utf-8')
+            return "hello".encode("utf-8")
 
         def getcode(self):
             return HTTPStatus.OK
@@ -26,13 +26,13 @@ def test_scraper_okay():
 
     urlopen = Nisse()
     xr = Scraper(logging=logging, urler=urlopen)
-    assert 'hello', xr.get_data()
+    assert "hello", xr.get_data()
 
 
 def test_scraper_status_code_error():
     class Nisse:
         def read(self):
-            return 'hello'.encode('utf-8')
+            return "hello".encode("utf-8")
 
         def getcode(self):
             return HTTPStatus.INTERNAL_SERVER_ERROR
@@ -50,7 +50,7 @@ def test_scraper_status_code_error():
 def test_scraper_urlerror():
     class Nisse:
         def read(self):
-            raise URLError(reason='Aj')
+            raise URLError(reason="Aj")
 
         def getcode(self):
             return HTTPStatus.OK
@@ -74,7 +74,7 @@ def test_scraper_urlerror_twice():
             self.error = code
 
         def read(self):
-            return 'hello'.encode('utf-8')
+            return "hello".encode("utf-8")
 
         def getcode(self):
             return self.error
@@ -97,7 +97,7 @@ def test_scraper_urlerror_twice():
 def test_scraper_no_encode():
     class Nisse:
         def read(self):
-            return 'helloa'
+            return "helloa"
 
         def getcode(self):
             return HTTPStatus.OK

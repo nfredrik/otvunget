@@ -42,7 +42,9 @@ def test_elspot_website_compatible():
     prices = it_all.values()
     date_pattern = ElSpotHTMLParser.date_pattern
     prices_pattern = re.compile(r"(-)?(\d{1,4}).(\d{1,4})(.*)")
-    result = all(date_pattern.match(the_date) is not None for the_date in dates)
+    result = all(
+        date_pattern.match(the_date) is not None for the_date in dates
+    )
     assert result
 
     result2 = all(prices_pattern.match(price) is not None for price in prices)
