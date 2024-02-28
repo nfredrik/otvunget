@@ -14,6 +14,7 @@ from sleep_controller import SleepController
 ERROR = 42
 
 
+
 def main(mock_scraper=None, config_filename=CONFIG_FILE_NAME):
     config = read_config(config_filename=config_filename)
     logger = setup_logger(config.loglevel, config.log_filename)
