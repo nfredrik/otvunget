@@ -11,7 +11,6 @@ from elspot_helper import (
     save_csv,
     CONFIG_FILE_NAME,
 )
-from parser import ElSpotHTMLParser, ElSpotDataError
 from repo import Repo
 from scraper import Scraper, ElSpotCommError
 from sleep_controller import SleepController
@@ -27,24 +26,21 @@ def main(mock_scraper=None, config_filename=CONFIG_FILE_NAME):
 
     scraper = mock_scraper or Scraper(logging=logger)
     sleep_controller = SleepController(config)
-    elspot_parser = ElSpotHTMLParser(logger)
     repo = Repo(logger, config.json_filename)
     time_to_sleep = 0
     while True:
         try:
             time_to_sleep: int = sleep_controller.current_backoff()
-            data = scraper.get_data()
-            elspot_parser.feed(data)
-            el_prices: dict = elspot_parser.get_elprices()
+            el_prices: dict = scraper.get_data()
             repo.save(el_prices)
-        except (ElSpotCommError, ElSpotDataError, ElSpotError) as e:
+        except (ElSpotCommError, ElSpotError) as e:
             logger.debug(
                 "-- failure , will backoff "
                 + str(time_to_sleep)
                 + " seconds"
                 + str(e)
             )
-            del data
+            del el_prices
 
         except KeyboardInterrupt:
             logger.error("-- user killed the script!!...")

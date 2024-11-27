@@ -1,3 +1,5 @@
+import json
+from datetime import datetime, timedelta
 from urllib.error import URLError
 from urllib.request import urlopen
 
@@ -8,16 +10,19 @@ class ElSpotCommError(Exception):
 
 class Scraper:
     HTTP_OK = 200
-    URL = "https://elspot.nu/dagens-spotpris/timpriser-pa-elborsen-for-elomrade-se3-stockholm"
 
     def __init__(self, logging, urler=None):
         self.logging = logging
         self.urler = urler
+        next_day = datetime.now() + timedelta(days=0)
+        date_string = f'{next_day.year}/{next_day.month}-{next_day.day}'
+        prisklass ='SE3'
+        self.build_url = f'https://www.elprisetjustnu.se/api/v1/prices/{date_string}_{prisklass}.json'
 
-    def get_data(self) -> str:
+    def get_data(self) -> dict:
         self.logging.info("-- get_elspot data")
         try:
-            response = self.urler or urlopen(Scraper.URL)
+            response = self.urler or urlopen(self.build_url)
             if response.getcode() != Scraper.HTTP_OK:
                 raise ElSpotCommError(
                     "Error: did not get a proper reply"
@@ -27,7 +32,7 @@ class Scraper:
         except URLError as e:
             self.logging.error("-- get_elspot com failure " + str(e))
             raise ElSpotCommError(
-                "Error: did not get a proper reply " + str(e.message)
+                "Error: did not get a proper reply " + str(e.reason)
             )
 
         except Exception as e:
@@ -36,4 +41,7 @@ class Scraper:
 
         body = response.read()
         response.close()
-        return body.decode("utf-8")
+        all_day = json.loads(body)
+
+        return {item['time_start'].split('+')[0].replace('T', ' '): item['SEK_per_kWh'] for item in all_day}
+

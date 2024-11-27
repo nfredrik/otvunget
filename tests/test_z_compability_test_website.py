@@ -2,7 +2,6 @@ import logging
 import re
 from urllib.request import urlopen
 
-from parser import ElSpotHTMLParser
 from scraper import Scraper
 import pytest
 
@@ -28,6 +27,7 @@ def test_elspot_website_any_content():
     response.close()
 
 
+@pytest.mark.skip
 def test_elspot_website_compatible():
     response = urlopen(Scraper.URL)
     assert response.getcode() == Scraper.HTTP_OK
