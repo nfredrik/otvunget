@@ -15,9 +15,9 @@ class Scraper:
         self.logging = logging
         self.urler = urler
         next_day = datetime.now() + timedelta(days=0)
-        date_string = f'{next_day.year}/{next_day.month}-{next_day.day}'
-        prisklass ='SE3'
-        self.build_url = f'https://www.elprisetjustnu.se/api/v1/prices/{date_string}_{prisklass}.json'
+        date_string = f"{next_day.year}/{next_day.month}-{next_day.day}"
+        prisklass = "SE3"
+        self.build_url = f"https://www.elprisetjustnu.se/api/v1/prices/{date_string}_{prisklass}.json"
 
     def get_data(self) -> dict:
         self.logging.info("-- get_elspot data")
@@ -43,5 +43,9 @@ class Scraper:
         response.close()
         all_day = json.loads(body)
 
-        return {item['time_start'].split('+')[0].replace('T', ' '): item['SEK_per_kWh'] for item in all_day}
-
+        return {
+            item["time_start"]
+            .split("+")[0]
+            .replace("T", " "): str(item["SEK_per_kWh"])
+            for item in all_day
+        }

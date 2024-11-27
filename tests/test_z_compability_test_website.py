@@ -6,7 +6,7 @@ from scraper import Scraper
 import pytest
 
 
-def assert_content(response, content=None, mimetype="text/html"):
+def assert_content(response, content=None, mimetype="application/json"):
     msg = "No Content-Type header found"
     assert "Content-Type" in response.headers, msg
 
@@ -18,29 +18,32 @@ def assert_content(response, content=None, mimetype="text/html"):
     assert len(body) > 1, "Expected content size to be bigger than 1!"
 
 
-@pytest.mark.integration
+# @pytest.mark.integration
 def test_elspot_website_any_content():
-    response = urlopen(Scraper.URL)
+    logger = logging.getLogger()
+
+    scraper = Scraper(logging=logger)
+    response = urlopen(scraper.build_url)
     assert response.getcode() == Scraper.HTTP_OK
 
     assert_content(response)
     response.close()
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_elspot_website_compatible():
-    response = urlopen(Scraper.URL)
+    logger = logging.getLogger()
+    scraper = Scraper(logging=logger)
+    response = urlopen(scraper.build_url)
     assert response.getcode() == Scraper.HTTP_OK
-    tm = ElSpotHTMLParser(logging)
-    body = response.read().decode("utf-8")
+
     response.close()
-    tm.feed(body)
-    it_all = tm.get_elprices()
+    it_all = scraper.get_data()
     assert isinstance(it_all, dict)
 
     dates = it_all.keys()
     prices = it_all.values()
-    date_pattern = ElSpotHTMLParser.date_pattern
+    date_pattern = re.compile(r"(\d{4})-(\d{2})-(\d{2})")
     prices_pattern = re.compile(r"(-)?(\d{1,4}).(\d{1,4})(.*)")
     result = all(
         date_pattern.match(the_date) is not None for the_date in dates
