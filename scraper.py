@@ -14,10 +14,24 @@ class Scraper:
     def __init__(self, logging, urler=None):
         self.logging = logging
         self.urler = urler
-        next_day = datetime.now() + timedelta(days=0)
-        date_string = f"{next_day.year}/{next_day.month}-{next_day.day}"
+        date_string = self.compute_date()
         prisklass = "SE3"
         self.build_url = f"https://www.elprisetjustnu.se/api/v1/prices/{date_string}_{prisklass}.json"
+
+    def compute_date(self,days:int=1) -> datetime:
+        next_day = datetime.now() + timedelta(days=days)
+        month = str(next_day.month).zfill(2)
+        day = str(next_day.day).zfill(2)
+        return f"{next_day.year}/{month}-{day}"
+
+    def ping_date(self) -> bool:
+        try:
+            response = self.urler or urlopen(self.build_url)
+            if response.getcode() != Scraper.HTTP_OK:
+                return False
+            return True
+        except URLError as e:
+            return False
 
     def get_data(self) -> dict:
         self.logging.info("-- get_elspot data")
@@ -31,6 +45,9 @@ class Scraper:
 
         except URLError as e:
             self.logging.error("-- get_elspot com failure " + str(e))
+
+            if e.status == 404:
+                raise e
             raise ElSpotCommError(
                 "Error: did not get a proper reply " + str(e.reason)
             )
@@ -45,7 +62,7 @@ class Scraper:
 
         return {
             item["time_start"]
-            .split("+")[0]
+            .split("+")[0][:-3]
             .replace("T", " "): str(item["SEK_per_kWh"])
             for item in all_day
         }

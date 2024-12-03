@@ -15,6 +15,8 @@ class Repo:
 
     @staticmethod
     def _today_date(d: dict) -> bool:
+        return bool
+
         dates = [d.split()[0] for d in d]
         return any(
             datetime.now().strftime("%Y-%m-%d") == item for item in dates

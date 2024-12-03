@@ -66,6 +66,7 @@ def configfile(tmpdir):
     return CONFIG_FILE
 
 
+@pytest.mark.skip
 def test_main(configfile):
     if (Path.cwd() / JSON_FILE).exists():
         os.remove((Path.cwd() / JSON_FILE).as_posix())

@@ -28,9 +28,15 @@ def main(mock_scraper=None, config_filename=CONFIG_FILE_NAME):
     sleep_controller = SleepController(config)
     repo = Repo(logger, config.json_filename)
     time_to_sleep = 0
+    el_prices  = 0
     while True:
         try:
             time_to_sleep: int = sleep_controller.current_backoff()
+            if not scraper.ping_date():
+                logger.debug("tomorrows data not available yet wait 5 minutes")
+                time.sleep(300)
+                continue
+
             el_prices: dict = scraper.get_data()
             repo.save(el_prices)
         except (ElSpotCommError, ElSpotError) as e:
@@ -40,7 +46,8 @@ def main(mock_scraper=None, config_filename=CONFIG_FILE_NAME):
                 + " seconds"
                 + str(e)
             )
-            del el_prices
+            if el_prices in globals():
+               del el_prices
 
         except KeyboardInterrupt:
             logger.error("-- user killed the script!!...")
