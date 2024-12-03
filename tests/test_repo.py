@@ -36,7 +36,7 @@ def test_repo_no_file_exist(tmpfile):
     assert repo.saved_file_date() < datetime.now().date()
 
 
-def test_no_date_today():
+def test_no_date_today(tmpfile):
     repo = Repo(logging, tmpfile)
     today = (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d")
     later = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")

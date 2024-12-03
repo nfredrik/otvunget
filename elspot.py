@@ -28,7 +28,7 @@ def main(mock_scraper=None, config_filename=CONFIG_FILE_NAME):
     sleep_controller = SleepController(config)
     repo = Repo(logger, config.json_filename)
     time_to_sleep = 0
-    el_prices  = 0
+    el_prices = 0
     while True:
         try:
             time_to_sleep: int = sleep_controller.current_backoff()
@@ -47,7 +47,7 @@ def main(mock_scraper=None, config_filename=CONFIG_FILE_NAME):
                 + str(e)
             )
             if el_prices in globals():
-               del el_prices
+                del el_prices
 
         except KeyboardInterrupt:
             logger.error("-- user killed the script!!...")

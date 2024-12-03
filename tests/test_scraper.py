@@ -28,7 +28,7 @@ def mock_response():
 def test_get_data_success(mock_logging, mock_response):
     scraper = Scraper(logging=mock_logging, urler=mock_response)
     data = scraper.get_data()
-    assert data == {"2024-11-27 00:00:00": "0.5", "2024-11-27 01:00:00": "0.6"}
+    assert data == {"2024-11-27 00:00": "0.5", "2024-11-27 01:00": "0.6"}
     mock_logging.info.assert_called_with("-- get_elspot data")
 
 

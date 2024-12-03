@@ -18,7 +18,7 @@ class Scraper:
         prisklass = "SE3"
         self.build_url = f"https://www.elprisetjustnu.se/api/v1/prices/{date_string}_{prisklass}.json"
 
-    def compute_date(self,days:int=1) -> datetime:
+    def compute_date(self, days: int = 1) -> datetime:
         next_day = datetime.now() + timedelta(days=days)
         month = str(next_day.month).zfill(2)
         day = str(next_day.day).zfill(2)
@@ -30,7 +30,7 @@ class Scraper:
             if response.getcode() != Scraper.HTTP_OK:
                 return False
             return True
-        except URLError as e:
+        except URLError:
             return False
 
     def get_data(self) -> dict:
@@ -46,8 +46,6 @@ class Scraper:
         except URLError as e:
             self.logging.error("-- get_elspot com failure " + str(e))
 
-            if e.status == 404:
-                raise e
             raise ElSpotCommError(
                 "Error: did not get a proper reply " + str(e.reason)
             )

@@ -15,7 +15,7 @@ class Repo:
 
     @staticmethod
     def _today_date(d: dict) -> bool:
-        return bool
+        # return bool
 
         dates = [d.split()[0] for d in d]
         return any(
